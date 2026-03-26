@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FormAlign</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --card: #121b2e;
+        --text: #e7eefc;
+        --muted: #9bb0d3;
+        --border: rgba(255, 255, 255, 0.12);
+        --accent: #4a6cf7;
+        --danger: #ef4444;
+        --ok: #10b981;
+        --warn: #f59e0b;
+        --radius: 14px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+          "Apple Color Emoji", "Segoe UI Emoji";
+        background: var(--bg);
+        color: var(--text);
+      }
+      header {
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      header h1 {
+        font-size: 16px;
+        margin: 0;
+        font-weight: 750;
+      }
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 18px 20px 60px;
+      }
+      .wrap.full {
+        max-width: none;
+        padding: 0;
+      }
+      .navRow {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 16px 0;
+      }
+      .page {
+        display: none;
+      }
+      .page.active {
+        display: block;
+      }
+      .center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .splash {
+        min-height: 100vh;
+        padding: 28px;
+      }
+      .splashCard {
+        width: 100%;
+        max-width: 760px;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        background: radial-gradient(1200px 700px at 10% 10%, rgba(74, 108, 247, 0.22), transparent 50%),
+          radial-gradient(900px 500px at 80% 30%, rgba(16, 185, 129, 0.16), transparent 55%),
+          rgba(255, 255, 255, 0.03);
+        padding: 34px 26px;
+        text-align: center;
+        overflow: hidden;
+      }
+      .logoMark {
+        font-weight: 900;
+        letter-spacing: 0.5px;
+        font-size: 40px;
+        line-height: 1.1;
+      }
+      .slogan {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .splashHint {
+        margin-top: 22px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .swipeUp {
+        animation: swipeUp 700ms ease-in forwards;
+      }
+      @keyframes swipeUp {
+        to {
+          transform: translateY(-110vh);
+          opacity: 0;
+        }
+      }
+
+      .homeGrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 720px) {
+        .homeGrid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .homeBtn {
+        padding: 16px;
+        border-radius: 16px;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+      }
+      .homeBtn strong {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .homeBtn span {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 16px;
+      }
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px;
+      }
+      .card h2 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      button {
+        background: rgba(74, 108, 247, 0.22);
+        color: var(--text);
+        border: 1px solid rgba(74, 108, 247, 0.4);
+        border-radius: 12px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-weight: 650;
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      button.primary {
+        background: var(--accent);
+        border-color: rgba(74, 108, 247, 0.7);
+      }
+      label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      select,
+      input[type="text"] {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        outline: none;
+      }
+      .small {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 12px 0;
+      }
+      #videoBox {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #000;
+        border: 1px solid var(--border);
+      }
+      video,
+      canvas {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      #overlay {
+        position: absolute;
+        left: 12px;
+        top: 12px;
+        right: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        pointer-events: none;
+      }
+      .pill {
+        align-self: flex-start;
+        padding: 8px 10px;
+        background: rgba(18, 27, 46, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 999px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .pill.warn {
+        color: #fbcf7c;
+        border-color: rgba(245, 158, 11, 0.55);
+      }
+      .pill.ok {
+        color: #a7f3d0;
+        border-color: rgba(16, 185, 129, 0.55);
+      }
+      .pill.danger {
+        color: #fecaca;
+        border-color: rgba(239, 68, 68, 0.55);
+      }
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+          monospace;
+      }
+      .list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .item {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 12px;
+      }
+      .itemTitle {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: baseline;
+      }
+      .tag {
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
+      .tag.ok {
+        border-color: rgba(16, 185, 129, 0.6);
+        color: #a7f3d0;
+      }
+      .tag.warn {
+        border-color: rgba(245, 158, 11, 0.6);
+        color: #fbcf7c;
+      }
+      .tag.danger {
+        border-color: rgba(239, 68, 68, 0.6);
+        color: #fecaca;
+      }
+      textarea {
+        width: 100%;
+        min-height: 90px;
+        resize: vertical;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>FormAlign</h1>
+      <div class="small mono" id="statusPill">Idle</div>
+    </header>
+    <div class="wrap">
+      <!-- Splash / landing -->
+      <div id="page-splash" class="page active">
+        <div class="splash center">
+          <div class="splashCard" id="splashCard">
+            <div class="logoMark">FormAlign</div>
+            <div class="slogan">
+              Real-time exercise form & posture coach. Interpretable feedback to bridge at-home rehab and clinical physiotherapy.
+            </div>
+            <div class="splashHint">Loading…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Home -->
+      <div id="page-home" class="page">
+        <div class="card">
+          <h2>Choose what you want to do</h2>
+          <div class="homeGrid">
+            <button id="homeGenerate" class="homeBtn primary" type="button">
+              <strong>Generate my workout</strong>
+              <span>Enter goals and let AI build your routine.</span>
+            </button>
+            <button id="homeUpload" class="homeBtn" type="button">
+              <strong>Upload my own workout</strong>
+              <span>Paste your PT/workout instructions and start coaching.</span>
+            </button>
+            <button id="homeProgress" class="homeBtn" type="button">
+              <strong>View my progress</strong>
+              <span>See frequency, correctness, and common form issues.</span>
+            </button>
+            <button id="homeClinical" class="homeBtn" type="button">
+              <strong>Generate clinical report</strong>
+              <span>Create a professional PDF for a selected date range.</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coach / manual workout page -->
+      <div id="page-coach" class="page">
+        <div class="card">
+          <h2>Real-time coach</h2>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <div style="min-width: 240px; flex: 1;">
+              <label for="exerciseType">Detected exercise</label>
+              <select id="exerciseType" disabled>
+                <option value="squat">Squat</option>
+                <option value="pushup">Pushup</option>
+                <option value="lunge">Lunge</option>
+                <option value="overhead_press">Overhead press</option>
+                <option value="auto">Auto (heuristics)</option>
+              </select>
+            </div>
+            <div style="min-width: 240px; flex: 1;">
+              <label for="safetyEnabled">Safety gating</label>
+              <select id="safetyEnabled">
+                <option value="true">If I feel pain/discomfort, I want the coach to stop</option>
+                <option value="false">No safety gating (not recommended)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 10px;">
+            <div style="flex: 1;">
+              <label for="manualWorkoutText">Your workout / PT instructions (paste)</label>
+              <textarea id="manualWorkoutText" placeholder="Example: PT gave me knee-friendly squats; go slow; stop if pain; focus on keeping torso upright..."></textarea>
+              <div class="row" style="margin-top: 10px;">
+                <button id="addWorkoutBtn" class="primary" style="flex: 1;">Add my workout</button>
+              </div>
+              <div class="small" id="manualWorkoutStatus" style="margin-top: 10px;">-</div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 12px;">
+            <button id="startBtn" class="primary" disabled>Start session</button>
+            <button id="stopBtn" disabled>Stop</button>
+            <button id="clearLogsBtn">Clear local view</button>
+          </div>
+
+          <div class="small" style="margin-bottom: 12px;">
+            Not medical advice. If you experience sharp pain, dizziness, numbness, or severe discomfort, stop and consult a clinician.
+          </div>
+
+          <div id="videoBox">
+            <video id="video" autoplay playsinline muted></video>
+            <div id="overlay">
+              <div class="pill" id="phasePill">Phase: -</div>
+              <div class="pill" id="scorePill">Correctness: -</div>
+              <div class="pill" id="coachPill">Feedback: -</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row" style="margin-bottom: 8px;">
+            <div style="flex: 1;">
+              <label>Rep counter</label>
+              <div class="small mono" id="repCounter">0 reps</div>
+            </div>
+            <div style="flex: 1;">
+              <label>Issues detected</label>
+              <div class="small mono" id="issueList">-</div>
+            </div>
+          </div>
+          <div class="row">
+            <div style="flex: 1;">
+              <label>Session ID</label>
+              <div class="small mono" id="sessionId">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI generate page -->
+      <div id="page-generate" class="page">
+        <div class="card">
+          <h2>AI workout generation</h2>
+          <div class="row" style="margin-bottom: 10px;">
+            <div style="flex: 1;">
+              <label for="goalsInput">Workout goals / notes</label>
+              <textarea id="goalsInput" placeholder="Example: improve forward head posture; build core strength; stop if pain..."></textarea>
+              <div class="row" style="margin-top: 10px;">
+                <button id="generateWorkoutPlanBtn" class="primary" style="flex:1;">AI generate workout</button>
+              </div>
+              <div class="small" id="workoutPlanOutput" style="margin-top: 10px; white-space: pre-wrap;">-</div>
+
+              <div class="divider"></div>
+
+              <div class="small" style="margin-bottom: 8px;">Detected first exercise</div>
+              <div class="small mono" id="detectedExerciseFromPlan">-</div>
+
+              <div class="row" style="margin-top: 12px;">
+                <button id="startCoachingFromPlanBtn" class="primary" disabled style="flex: 1;">Start coaching</button>
+              </div>
+              <div class="small" style="margin-top: 10px;">
+                Tip: once generated, navigate to the coach page to start real-time feedback.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics page -->
+      <div id="page-metrics" class="page">
+        <div class="card">
+          <h2>Metrics + physio report</h2>
+
+          <div class="row" style="margin-bottom: 10px;">
+            <div style="flex: 1;">
+              <label for="metricsExercise">Metrics exercise filter</label>
+              <select id="metricsExercise">
+                <option value="squat">Squat</option>
+                <option value="pushup">Pushup</option>
+                <option value="lunge">Lunge</option>
+                <option value="overhead_press">Overhead press</option>
+              </select>
+            </div>
+            <div style="flex: 1;">
+              <label for="metricsDays">Lookback window</label>
+              <select id="metricsDays">
+                <option value="7">7 days</option>
+                <option value="30" selected>30 days</option>
+                <option value="90">90 days</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 12px;">
+            <button id="generateReportBtn" disabled>Generate physio report (PDF)</button>
+            <button id="refreshBtn">Refresh</button>
+          </div>
+          <div class="small" id="reportStatus" style="margin-top: 10px;">-</div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <div style="flex: 1;">
+              <label for="reportsSessionId">Selected session for report</label>
+              <select id="reportsSessionId"></select>
+              <div class="small" style="margin-top: 8px;">
+                Report generation uses Gemini (async). In this MVP, it may be placeholder until Gemini is configured.
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="item">
+            <div class="itemTitle">
+              <div><span class="tag ok">Summary</span></div>
+              <div class="small mono" id="summaryLastUpdated">-</div>
+            </div>
+            <div class="small" id="metricsSummary" style="margin-top: 8px;">
+              - 
+            </div>
+            <div style="margin-top: 12px;">
+              <div class="small" style="margin-bottom: 8px;">Exercise frequency (last lookback window)</div>
+              <canvas id="frequencyChart" height="120" style="width: 100%;"></canvas>
+            </div>
+            <div class="divider"></div>
+            <div>
+              <div class="small" style="margin-bottom: 8px;">Most common form issues (risk + recommendation)</div>
+              <div class="small" id="issueStats"></div>
+              <div class="small" style="margin-top: 10px;">
+                Safety note: if a cue increases pain, stop and consult a clinician.
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="list" id="sessionsList"></div>
+        </div>
+      </div>
+
+      <!-- Clinical report page -->
+      <div id="page-clinical-report" class="page">
+        <div class="card">
+          <h2>Clinical report</h2>
+          <div class="small" style="margin-bottom: 12px;">
+            Select a date range of completed workouts. We’ll aggregate movement quality and generate a professional PDF report.
+          </div>
+
+          <div class="row" style="margin-bottom: 10px;">
+            <div style="flex: 1; min-width: 240px;">
+              <label for="clinicalStartDate">Start date</label>
+              <input id="clinicalStartDate" type="date" />
+            </div>
+            <div style="flex: 1; min-width: 240px;">
+              <label for="clinicalEndDate">End date</label>
+              <input id="clinicalEndDate" type="date" />
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 12px;">
+            <button id="generateClinicalReportBtn" class="primary" type="button">Generate clinical report</button>
+            <button id="clinicalBackBtn" type="button">Back</button>
+          </div>
+
+          <div class="small" id="clinicalReportStatus" style="margin-top: 10px;">-</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pose detection -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.1.3"></script>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,13 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      # Persist SQLite database between container restarts (MVP dev mode)
+      - SQLITE_DATA_DIR=/data
+      - SQLITE_DB_PATH=/data/app.db
+      - COACH_EVENTS_PER_MINUTE=6
+    volumes:
+      - ./backend/data:/data

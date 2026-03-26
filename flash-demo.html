@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --card-bg: #ffffff;
+    --text: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --border: #e5e5e7;
+    --accent-text: #4a6cf7;
+    --accent-image: #e85d75;
+    --accent-audio: #f59e0b;
+    --accent-video: #10b981;
+    --accent-pdf: #8b5cf6;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .gear-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+    padding: 4px;
+    border-radius: 8px;
+    transition: background 0.15s;
+  }
+  .gear-btn:hover { background: var(--bg); }
+
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 16px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    border-top: 3px solid var(--border);
+  }
+
+  .card[data-type="text"]  { border-top-color: var(--accent-text); }
+  .card[data-type="image"] { border-top-color: var(--accent-image); }
+  .card[data-type="audio"] { border-top-color: var(--accent-audio); }
+  .card[data-type="video"] { border-top-color: var(--accent-video); }
+  .card[data-type="pdf"]   { border-top-color: var(--accent-pdf); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .card-icon {
+    font-size: 1.3rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .card[data-type="text"] .card-icon  { background: #eef1fe; color: var(--accent-text); }
+  .card[data-type="image"] .card-icon { background: #fce8ec; color: var(--accent-image); }
+  .card[data-type="audio"] .card-icon { background: #fef3cd; color: var(--accent-audio); }
+  .card[data-type="video"] .card-icon { background: #d1fae5; color: var(--accent-video); }
+  .card[data-type="pdf"] .card-icon   { background: #ede9fe; color: var(--accent-pdf); }
+
+  .card-title { font-weight: 600; font-size: 1.05rem; }
+
+  textarea {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  textarea:focus { border-color: var(--accent-text); }
+
+  .file-input-wrap {
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+  .file-input-wrap:hover { border-color: var(--text-secondary); background: var(--bg); }
+  .file-input-wrap input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .file-input-wrap .label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .preview-area {
+    margin-top: 12px;
+  }
+  .preview-area img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+  }
+  .preview-area audio { width: 100%; margin-top: 8px; }
+  .preview-area video {
+    width: 100%;
+    max-height: 240px;
+    border-radius: 8px;
+    background: #000;
+  }
+  .file-name {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+  }
+  .size-warning {
+    font-size: 0.85rem;
+    color: var(--accent-image);
+    margin-top: 4px;
+  }
+
+  .submit-btn {
+    margin-top: 16px;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .card[data-type="text"] .submit-btn  { background: var(--accent-text); }
+  .card[data-type="image"] .submit-btn { background: var(--accent-image); }
+  .card[data-type="audio"] .submit-btn { background: var(--accent-audio); }
+  .card[data-type="video"] .submit-btn { background: var(--accent-video); }
+  .card[data-type="pdf"] .submit-btn   { background: var(--accent-pdf); }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
+  }
+  .submit-btn.loading .spinner { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Audio recording */
+  .audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .record-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent-audio);
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s;
+    position: relative;
+  }
+  .record-btn:active { transform: scale(0.95); }
+  .record-btn.recording {
+    background: #ef4444;
+    animation: pulse-ring 1.2s ease-out infinite;
+  }
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+    100% { box-shadow: 0 0 0 12px rgba(239,68,68,0); }
+  }
+  .record-status {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  .record-status .timer {
+    font-variant-numeric: tabular-nums;
+    color: #ef4444;
+    font-weight: 600;
+  }
+
+  /* Video controls */
+  .video-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .video-controls button {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card-bg);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .video-controls button:hover { background: var(--bg); }
+  .video-controls button.active {
+    background: var(--accent-video);
+    color: #fff;
+    border-color: var(--accent-video);
+  }
+
+  /* Results */
+  .results {
+    margin-top: 16px;
+  }
+  .results-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .results-list li {
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: 8px;
+    font-size: 0.93rem;
+  }
+  .results-list .item-name { font-weight: 600; }
+  .results-list .item-category {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-left: 8px;
+  }
+  .results-list .item-details {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* Settings modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 16px;
+  }
+  .modal-overlay.visible { display: flex; }
+  .modal {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 28px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  }
+  .modal h2 { font-size: 1.15rem; margin-bottom: 16px; }
+  .modal label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .modal input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+  }
+  .modal input[type="text"]:focus { border-color: var(--accent-text); }
+  .modal .hint {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+  }
+  .modal .hint a { color: var(--accent-text); }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .modal-actions button {
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    transition: background 0.15s;
+  }
+  .modal-actions button:hover { background: var(--bg); }
+  .modal-actions .save-btn {
+    background: var(--accent-text);
+    color: #fff;
+    border-color: var(--accent-text);
+  }
+  .modal-actions .save-btn:hover { opacity: 0.9; background: var(--accent-text); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--text);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    z-index: 200;
+    transition: transform 0.3s ease;
+    pointer-events: none;
+    max-width: 90vw;
+    text-align: center;
+  }
+  .toast.visible { transform: translateX(-50%) translateY(0); }
+
+  /* New simplified workout UI */
+  #legacyDemo { display: none; }
+
+  .app-shell {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 20px 16px 110px;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .home-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .home-btn {
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    border-radius: 12px;
+    min-height: 110px;
+    padding: 14px;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: var(--shadow);
+  }
+
+  .home-btn .title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .home-btn .desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .panel {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+
+  .panel h2 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .field { margin-bottom: 10px; }
+  .field label {
+    display: block;
+    font-size: 0.86rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.92rem;
+  }
+
+  .row-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+    background: var(--accent-text);
+  }
+
+  .btn.secondary {
+    background: var(--text-secondary);
+  }
+
+  .btn.success {
+    background: #16a34a;
+  }
+
+  .btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  .hint {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .exercise-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .exercise-list li {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    background: var(--bg);
+  }
+
+  .coach-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .coach-video {
+    width: 100%;
+    max-height: 260px;
+    border-radius: 10px;
+    background: #000;
+  }
+
+  .live-comments {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 160px;
+    overflow: auto;
+  }
+
+  .live-comments li {
+    font-size: 0.87rem;
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 8px;
+  }
+
+  .report {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.88rem;
+    white-space: pre-wrap;
+  }
+
+  .bottom-tabs {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    z-index: 20;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .tab-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 10px 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .tab-btn.active {
+    color: var(--accent-text);
+    background: #eef1fe;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AI Demo</h1>
+  <button class="gear-btn" id="openSettings" aria-label="Settings">&#9881;</button>
+</header>
+
+<main class="app-shell">
+  <section class="page active" id="page-home">
+    <div class="panel">
+      <h2>Workout Home</h2>
+      <p class="hint" style="margin-bottom:10px">Choose one area to continue.</p>
+      <div class="home-grid">
+        <button class="home-btn" data-go-tab="generate">
+          <div class="title">Generate Workout</div>
+          <div class="desc">Create a custom workout using goals + AI.</div>
+        </button>
+        <button class="home-btn" data-go-tab="start">
+          <div class="title">Start My Own Workout</div>
+          <div class="desc">Build your own routine and begin now.</div>
+        </button>
+        <button class="home-btn" data-go-tab="progress">
+          <div class="title">Progress</div>
+          <div class="desc">See workout history and coaching reports.</div>
+        </button>
+        <button class="home-btn" data-go-tab="profile">
+          <div class="title">Profile</div>
+          <div class="desc">API key and app preferences.</div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-generate">
+    <div class="panel">
+      <h2>Generate Workout</h2>
+      <div class="field">
+        <label for="goalInput">Workout goal</label>
+        <input id="goalInput" placeholder="Build strength, improve endurance...">
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label for="levelInput">Level</label>
+          <select id="levelInput">
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="durationInput">Duration (minutes)</label>
+          <input id="durationInput" type="number" min="10" max="180" value="45">
+        </div>
+      </div>
+      <div class="field">
+        <label for="equipmentInput">Equipment</label>
+        <input id="equipmentInput" placeholder="Dumbbells, mat, resistance band">
+      </div>
+      <div class="field">
+        <label for="constraintsInput">Constraints (optional)</label>
+        <textarea id="constraintsInput" rows="3" placeholder="Knee pain, low-impact only..."></textarea>
+      </div>
+      <button class="btn" id="generateBtn">Generate Workout</button>
+    </div>
+
+    <div class="panel">
+      <h2>Generated Plan</h2>
+      <div id="generatedWorkoutOutput" class="hint">No workout generated yet.</div>
+    </div>
+
+    <div class="panel">
+      <h2>Video Coaching (Generate Workout)</h2>
+      <p class="hint">Start workout and camera to receive live comments. A final metrics report will be saved to Progress.</p>
+      <div class="row-actions">
+        <button class="btn success" id="genStartWorkoutBtn">Start Workout</button>
+        <button class="btn secondary" id="genFinishWorkoutBtn" disabled>Finish Workout</button>
+      </div>
+      <div class="coach-layout" style="margin-top:10px">
+        <video id="genCoachVideo" class="coach-video" autoplay muted playsinline></video>
+        <div class="row-actions">
+          <button class="btn" id="genStartCameraBtn">Start Camera</button>
+          <button class="btn secondary" id="genStopCameraBtn" disabled>Stop Camera</button>
+        </div>
+        <ul id="genLiveComments" class="live-comments"></ul>
+        <div id="genFinalReport" class="report" style="display:none"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-start">
+    <div class="panel">
+      <h2>Start My Own Workout</h2>
+      <div class="grid-2">
+        <div class="field">
+          <label for="exName">Exercise</label>
+          <input id="exName" placeholder="Squat">
+        </div>
+        <div class="field">
+          <label for="exSets">Sets x Reps</label>
+          <input id="exSets" placeholder="3 x 10">
+        </div>
+      </div>
+      <button class="btn" id="addExerciseBtn">Add Exercise</button>
+      <ul class="exercise-list" id="exerciseList"></ul>
+      <div class="row-actions">
+        <button class="btn success" id="startOwnWorkoutBtn">Start Workout</button>
+        <button class="btn secondary" id="finishOwnWorkoutBtn" disabled>Finish Workout</button>
+      </div>
+      <p class="hint" id="ownWorkoutTimer">Timer: 00:00</p>
+    </div>
+
+    <div class="panel">
+      <h2>Video Coaching (My Workout)</h2>
+      <p class="hint">Turn on camera for live coaching comments while you train.</p>
+      <video id="startCoachVideo" class="coach-video" autoplay muted playsinline></video>
+      <div class="row-actions">
+        <button class="btn" id="startStartCameraBtn">Start Camera</button>
+        <button class="btn secondary" id="startStopCameraBtn" disabled>Stop Camera</button>
+      </div>
+      <ul id="startLiveComments" class="live-comments"></ul>
+      <div id="startFinalReport" class="report" style="display:none"></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-progress">
+    <div class="panel">
+      <h2>Progress</h2>
+      <div id="progressStats" class="hint">No sessions yet.</div>
+      <div id="historyList" style="margin-top:10px"></div>
+      <div class="row-actions">
+        <button class="btn secondary" id="clearHistoryBtn">Clear History</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-profile">
+    <div class="panel">
+      <h2>Profile</h2>
+      <div class="field">
+        <label for="profileApiKeyInput">Gemini API Key</label>
+        <input type="text" id="profileApiKeyInput" placeholder="AIza...">
+      </div>
+      <div class="row-actions">
+        <button class="btn" id="saveProfileApiKeyBtn">Save API Key</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-tabs" aria-label="Bottom navigation">
+  <button class="tab-btn" data-tab="generate">Generate</button>
+  <button class="tab-btn" data-tab="start">Start</button>
+  <button class="tab-btn" data-tab="progress">Progress</button>
+  <button class="tab-btn" data-tab="profile">Profile</button>
+</nav>
+
+<div class="container" id="legacyDemo">
+
+  <!-- Text -->
+  <div class="card" data-type="text">
+    <div class="card-header">
+      <div class="card-icon">T</div>
+      <div class="card-title">Text</div>
+    </div>
+    <textarea id="textInput" placeholder="Paste or type text to extract items from..."></textarea>
+    <button class="submit-btn" id="textSubmit">Extract Items <span class="spinner"></span></button>
+    <div class="results" id="textResults"></div>
+  </div>
+
+  <!-- Image -->
+  <div class="card" data-type="image">
+    <div class="card-header">
+      <div class="card-icon">&#128247;</div>
+      <div class="card-title">Image</div>
+    </div>
+    <div class="file-input-wrap">
+      <input type="file" accept="image/*" capture="environment" id="imageInput">
+      <div class="label">Tap to take a photo or choose an image</div>
+    </div>
+    <div class="preview-area" id="imagePreview"></div>
+    <button class="submit-btn" id="imageSubmit" disabled>Extract Items <span class="spinner"></span></button>
+    <div class="results" id="imageResults"></div>
+  </div>
+
+  <!-- Audio -->
+  <div class="card" data-type="audio">
+    <div class="card-header">
+      <div class="card-icon">&#127908;</div>
+      <div class="card-title">Audio</div>
+    </div>
+    <div class="audio-controls">
+      <button class="record-btn" id="recordBtn" title="Record">&#9679;</button>
+      <div class="record-status" id="recordStatus">Tap to record</div>
+    </div>
+    <div class="preview-area" id="audioPreview"></div>
+    <button class="submit-btn" id="audioSubmit" disabled>Extract Items <span class="spinner"></span></button>
+    <div class="results" id="audioResults"></div>
+  </div>
+
+  <!-- Video -->
+  <div class="card" data-type="video">
+    <div class="card-header">
+      <div class="card-icon">&#127909;</div>
+      <div class="card-title">Video</div>
+    </div>
+    <div class="video-controls">
+      <button id="videoRecordBtn">Record Video</button>
+      <button id="videoStopBtn" style="display:none">Stop Recording</button>
+    </div>
+    <div class="file-input-wrap" style="margin-top:8px">
+      <input type="file" accept="video/*" id="videoFileInput">
+      <div class="label">Or upload a video file</div>
+    </div>
+    <div class="preview-area" id="videoPreview"></div>
+    <div class="size-warning" id="videoSizeWarning" style="display:none"></div>
+    <button class="submit-btn" id="videoSubmit" disabled>Extract Items <span class="spinner"></span></button>
+    <div class="results" id="videoResults"></div>
+  </div>
+
+  <!-- PDF -->
+  <div class="card" data-type="pdf">
+    <div class="card-header">
+      <div class="card-icon">&#128196;</div>
+      <div class="card-title">PDF</div>
+    </div>
+    <div class="file-input-wrap">
+      <input type="file" accept=".pdf,application/pdf" id="pdfInput">
+      <div class="label">Choose a PDF document</div>
+    </div>
+    <div class="file-name" id="pdfFileName"></div>
+    <button class="submit-btn" id="pdfSubmit" disabled>Extract Items <span class="spinner"></span></button>
+    <div class="results" id="pdfResults"></div>
+  </div>
+
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <h2>Settings</h2>
+    <label for="apiKeyInput">Gemini API Key</label>
+    <input type="text" id="apiKeyInput" placeholder="AIza...">
+    <div class="hint">Get a key from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a></div>
+    <div class="modal-actions">
+      <button id="cancelSettings">Cancel</button>
+      <button class="save-btn" id="saveSettings">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { GoogleGenAI } from 'https://esm.sh/@google/genai@1.30.0';
+
+const API_KEY_STORAGE = 'workout_api_key';
+const HISTORY_STORAGE = 'workout_history_v1';
+const MODEL = 'gemini-2.5-flash';
+
+const pages = ['home', 'generate', 'start', 'progress', 'profile'];
+let activeTab = 'home';
+
+let currentGeneratedWorkout = null;
+let generatedSessionStart = null;
+let ownSessionStart = null;
+let ownTimerInterval = null;
+const ownExercises = [];
+
+const generateCoachState = createCoachState('gen');
+const startCoachState = createCoachState('start');
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+function showToast(msg, duration = 2800) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('visible');
+  setTimeout(() => t.classList.remove('visible'), duration);
+}
+
+function getApiKey() {
+  return localStorage.getItem(API_KEY_STORAGE) || '';
+}
+
+function setApiKey(value) {
+  localStorage.setItem(API_KEY_STORAGE, value.trim());
+}
+
+function getHistory() {
+  try {
+    const data = JSON.parse(localStorage.getItem(HISTORY_STORAGE) || '[]');
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(history) {
+  localStorage.setItem(HISTORY_STORAGE, JSON.stringify(history));
+}
+
+function addHistoryEntry(entry) {
+  const history = getHistory();
+  history.unshift(entry);
+  saveHistory(history);
+  renderProgress();
+}
+
+function setActiveTab(tab) {
+  if (!pages.includes(tab)) return;
+  activeTab = tab;
+  document.querySelectorAll('.page').forEach((el) => {
+    el.classList.toggle('active', el.id === `page-${tab}`);
+  });
+  document.querySelectorAll('.tab-btn').forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+
+  // Make switching feel immediate: new page starts at the top.
+  window.scrollTo(0, 0);
+}
+
+async function callAiJson(schema, prompt, parts = []) {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    setActiveTab('profile');
+    showToast('Add API key in Profile first');
+    throw new Error('Missing API key');
+  }
+  const ai = new GoogleGenAI({ apiKey });
+  const response = await ai.models.generateContent({
+    model: MODEL,
+    contents: [{ role: 'user', parts: [{ text: prompt }, ...parts] }],
+    config: { responseMimeType: 'application/json', responseSchema: schema }
+  });
+  return JSON.parse(response.text || '{}');
+}
+
+function setupNavigation() {
+  document.querySelectorAll('.tab-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setActiveTab(btn.dataset.tab);
+    });
+  });
+  document.querySelectorAll('[data-go-tab]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setActiveTab(btn.dataset.goTab);
+    });
+  });
+}
+
+function setupProfile() {
+  const input = document.getElementById('profileApiKeyInput');
+  input.value = getApiKey();
+  document.getElementById('saveProfileApiKeyBtn').onclick = () => {
+    setApiKey(input.value);
+    showToast('API key saved');
+  };
+  document.getElementById('openSettings').onclick = () => setActiveTab('profile');
+}
+
+function setupGenerateWorkout() {
+  const output = document.getElementById('generatedWorkoutOutput');
+  const generateBtn = document.getElementById('generateBtn');
+  generateBtn.onclick = async () => {
+    const goal = document.getElementById('goalInput').value.trim();
+    const level = document.getElementById('levelInput').value;
+    const duration = document.getElementById('durationInput').value;
+    const equipment = document.getElementById('equipmentInput').value.trim();
+    const constraints = document.getElementById('constraintsInput').value.trim();
+    if (!goal) {
+      showToast('Enter a workout goal');
+      return;
+    }
+    generateBtn.disabled = true;
+    output.textContent = 'Generating workout...';
+    const schema = {
+      type: 'object',
+      properties: {
+        title: { type: 'string' },
+        warmup: { type: 'array', items: { type: 'string' } },
+        main: { type: 'array', items: { type: 'string' } },
+        cooldown: { type: 'array', items: { type: 'string' } }
+      },
+      required: ['title', 'warmup', 'main', 'cooldown']
+    };
+    try {
+      const prompt = `Create a safe workout plan.
+Goal: ${goal}
+Level: ${level}
+Duration minutes: ${duration}
+Equipment: ${equipment || 'Bodyweight'}
+Constraints: ${constraints || 'None'}
+Keep instructions simple.`;
+      currentGeneratedWorkout = await callAiJson(schema, prompt);
+      output.innerHTML = `
+        <div><strong>${esc(currentGeneratedWorkout.title)}</strong></div>
+        <div style="margin-top:8px"><strong>Warmup</strong><ul>${currentGeneratedWorkout.warmup.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>
+        <div><strong>Main</strong><ul>${currentGeneratedWorkout.main.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>
+        <div><strong>Cooldown</strong><ul>${currentGeneratedWorkout.cooldown.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>
+      `;
+      showToast('Workout generated');
+    } catch (e) {
+      output.textContent = 'Unable to generate workout.';
+      showToast(e.message || 'Generation failed');
+    } finally {
+      generateBtn.disabled = false;
+    }
+  };
+
+  const startBtn = document.getElementById('genStartWorkoutBtn');
+  const finishBtn = document.getElementById('genFinishWorkoutBtn');
+  startBtn.onclick = () => {
+    generatedSessionStart = Date.now();
+    finishBtn.disabled = false;
+    showToast('Generated workout started. Start camera for live feedback.');
+  };
+  finishBtn.onclick = async () => {
+    if (!generatedSessionStart) return;
+    finishBtn.disabled = true;
+    const durationSec = Math.max(1, Math.floor((Date.now() - generatedSessionStart) / 1000));
+    const report = await finalizeCoachReport(generateCoachState, {
+      source: 'Generate Workout',
+      durationSec,
+      workoutTitle: currentGeneratedWorkout?.title || 'Generated Session'
+    });
+    addHistoryEntry({
+      date: new Date().toISOString(),
+      source: 'Generate Workout',
+      title: currentGeneratedWorkout?.title || 'Generated Session',
+      durationSec,
+      report
+    });
+    generatedSessionStart = null;
+    showToast('Session finished and report added to Progress');
+  };
+}
+
+function renderOwnExercises() {
+  const list = document.getElementById('exerciseList');
+  if (!ownExercises.length) {
+    list.innerHTML = '<li>No exercises yet.</li>';
+    return;
+  }
+  list.innerHTML = ownExercises.map((item, idx) =>
+    `<li><strong>${idx + 1}. ${esc(item.name)}</strong><div>${esc(item.plan)}</div></li>`).join('');
+}
+
+function setupStartWorkout() {
+  const exName = document.getElementById('exName');
+  const exSets = document.getElementById('exSets');
+  const timerEl = document.getElementById('ownWorkoutTimer');
+
+  document.getElementById('addExerciseBtn').onclick = () => {
+    const name = exName.value.trim();
+    const plan = exSets.value.trim();
+    if (!name || !plan) {
+      showToast('Add exercise and sets/reps');
+      return;
+    }
+    ownExercises.push({ name, plan });
+    exName.value = '';
+    exSets.value = '';
+    renderOwnExercises();
+  };
+
+  document.getElementById('startOwnWorkoutBtn').onclick = () => {
+    if (!ownExercises.length) {
+      showToast('Add at least one exercise');
+      return;
+    }
+    ownSessionStart = Date.now();
+    document.getElementById('finishOwnWorkoutBtn').disabled = false;
+    clearInterval(ownTimerInterval);
+    ownTimerInterval = setInterval(() => {
+      const s = Math.floor((Date.now() - ownSessionStart) / 1000);
+      const mm = String(Math.floor(s / 60)).padStart(2, '0');
+      const ss = String(s % 60).padStart(2, '0');
+      timerEl.textContent = `Timer: ${mm}:${ss}`;
+    }, 500);
+    showToast('Workout started. Start camera for live feedback.');
+  };
+
+  document.getElementById('finishOwnWorkoutBtn').onclick = async () => {
+    if (!ownSessionStart) return;
+    clearInterval(ownTimerInterval);
+    document.getElementById('finishOwnWorkoutBtn').disabled = true;
+    const durationSec = Math.max(1, Math.floor((Date.now() - ownSessionStart) / 1000));
+    const report = await finalizeCoachReport(startCoachState, {
+      source: 'Start My Own Workout',
+      durationSec,
+      workoutTitle: 'My Workout',
+      exercises: ownExercises
+    });
+    addHistoryEntry({
+      date: new Date().toISOString(),
+      source: 'Start My Own Workout',
+      title: 'My Workout',
+      durationSec,
+      exercises: [...ownExercises],
+      report
+    });
+    ownSessionStart = null;
+    timerEl.textContent = 'Timer: 00:00';
+    showToast('Workout saved to Progress');
+  };
+
+  renderOwnExercises();
+}
+
+function renderProgress() {
+  const history = getHistory();
+  const stats = document.getElementById('progressStats');
+  const list = document.getElementById('historyList');
+  const weekMs = 7 * 24 * 60 * 60 * 1000;
+  const now = Date.now();
+  const weekCount = history.filter((h) => now - new Date(h.date).getTime() <= weekMs).length;
+  stats.textContent = `Total sessions: ${history.length} | This week: ${weekCount}`;
+  if (!history.length) {
+    list.innerHTML = '<p class="hint">No sessions yet.</p>';
+    return;
+  }
+  list.innerHTML = history.map((h) => {
+    const dt = new Date(h.date).toLocaleString();
+    const reportText = h.report
+      ? `${h.report.summary}\nScore: ${h.report.score}/10\nStrengths: ${(h.report.strengths || []).join(', ')}\nNeeds work: ${(h.report.issues || []).join(', ')}\nNext: ${(h.report.nextSteps || []).join(', ')}`
+      : 'No report available.';
+    return `<div class="panel">
+      <div><strong>${esc(h.title || h.source)}</strong></div>
+      <div class="hint">${esc(h.source)} | ${dt} | ${Math.round((h.durationSec || 0) / 60)} min</div>
+      <div class="report" style="margin-top:8px">${esc(reportText)}</div>
+    </div>`;
+  }).join('');
+}
+
+function createCoachState(prefix) {
+  return {
+    prefix,
+    stream: null,
+    liveInterval: null,
+    requesting: false,
+    comments: [],
+    videoEl: document.getElementById(`${prefix}CoachVideo`),
+    startCameraBtn: document.getElementById(`${prefix}StartCameraBtn`),
+    stopCameraBtn: document.getElementById(`${prefix}StopCameraBtn`),
+    liveListEl: document.getElementById(`${prefix}LiveComments`),
+    reportEl: document.getElementById(`${prefix}FinalReport`)
+  };
+}
+
+function captureFramePart(videoEl) {
+  const canvas = document.createElement('canvas');
+  canvas.width = videoEl.videoWidth || 320;
+  canvas.height = videoEl.videoHeight || 240;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+  const data = canvas.toDataURL('image/jpeg', 0.75).split(',')[1];
+  return { inlineData: { mimeType: 'image/jpeg', data } };
+}
+
+function renderLiveComments(state) {
+  if (!state.comments.length) {
+    state.liveListEl.innerHTML = '<li>No live comments yet.</li>';
+    return;
+  }
+  state.liveListEl.innerHTML = state.comments.map((c) => `<li>${esc(c)}</li>`).join('');
+}
+
+async function requestLiveFeedback(state, context) {
+  if (!state.stream || state.requesting) return;
+  const key = getApiKey();
+  if (!key) return;
+  state.requesting = true;
+  const schema = {
+    type: 'object',
+    properties: { comment: { type: 'string' } },
+    required: ['comment']
+  };
+  try {
+    const prompt = `You are a workout coach. Give 1 short, supportive comment on form/pace/safety. Context: ${JSON.stringify(context)}.`;
+    const data = await callAiJson(schema, prompt, [captureFramePart(state.videoEl)]);
+    if (data.comment) {
+      state.comments.unshift(data.comment);
+      state.comments = state.comments.slice(0, 12);
+      renderLiveComments(state);
+    }
+  } catch {
+    // best-effort live feedback
+  } finally {
+    state.requesting = false;
+  }
+}
+
+async function startCamera(state, contextGetter) {
+  try {
+    state.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+    state.videoEl.srcObject = state.stream;
+    state.startCameraBtn.disabled = true;
+    state.stopCameraBtn.disabled = false;
+    state.comments = [];
+    renderLiveComments(state);
+    state.liveInterval = setInterval(() => {
+      requestLiveFeedback(state, contextGetter());
+    }, 10000);
+    showToast('Camera started');
+  } catch {
+    showToast('Camera access denied');
+  }
+}
+
+function stopCamera(state) {
+  if (state.liveInterval) clearInterval(state.liveInterval);
+  state.liveInterval = null;
+  if (state.stream) {
+    state.stream.getTracks().forEach((t) => t.stop());
+    state.stream = null;
+  }
+  state.videoEl.srcObject = null;
+  state.startCameraBtn.disabled = false;
+  state.stopCameraBtn.disabled = true;
+}
+
+async function finalizeCoachReport(state, context) {
+  stopCamera(state);
+  const schema = {
+    type: 'object',
+    properties: {
+      summary: { type: 'string' },
+      score: { type: 'number' },
+      strengths: { type: 'array', items: { type: 'string' } },
+      issues: { type: 'array', items: { type: 'string' } },
+      nextSteps: { type: 'array', items: { type: 'string' } }
+    },
+    required: ['summary', 'score', 'strengths', 'issues', 'nextSteps']
+  };
+  let report = null;
+  try {
+    const prompt = `Create an end-of-workout metrics report from this context and live comments.
+Context: ${JSON.stringify(context)}
+Live comments: ${JSON.stringify(state.comments)}
+If details are missing, infer conservatively and mention assumptions.`;
+    report = await callAiJson(schema, prompt);
+  } catch {
+    report = {
+      summary: 'Workout completed. Report generated with limited AI data.',
+      score: 7,
+      strengths: ['Session completed'],
+      issues: ['Limited coaching data captured'],
+      nextSteps: ['Keep camera on for richer feedback next time']
+    };
+  }
+  state.reportEl.style.display = '';
+  state.reportEl.textContent = `Summary: ${report.summary}
+Score: ${report.score}/10
+Strengths: ${(report.strengths || []).join(', ')}
+Needs work: ${(report.issues || []).join(', ')}
+Next steps: ${(report.nextSteps || []).join(', ')}`;
+  return report;
+}
+
+function setupCoaching() {
+  generateCoachState.startCameraBtn.onclick = () => startCamera(generateCoachState, () => ({
+    tab: 'generate',
+    goal: document.getElementById('goalInput').value.trim(),
+    plan: currentGeneratedWorkout
+  }));
+  generateCoachState.stopCameraBtn.onclick = () => stopCamera(generateCoachState);
+  startCoachState.startCameraBtn.onclick = () => startCamera(startCoachState, () => ({
+    tab: 'start',
+    exercises: ownExercises
+  }));
+  startCoachState.stopCameraBtn.onclick = () => stopCamera(startCoachState);
+}
+
+function setupProgressActions() {
+  document.getElementById('clearHistoryBtn').onclick = () => {
+    saveHistory([]);
+    renderProgress();
+    showToast('Progress cleared');
+  };
+}
+
+function init() {
+  const settingsModal = document.getElementById('settingsModal');
+  if (settingsModal) settingsModal.remove();
+  setupNavigation();
+  setupProfile();
+  setupGenerateWorkout();
+  setupStartWorkout();
+  setupCoaching();
+  setupProgressActions();
+  renderProgress();
+  setActiveTab('home');
+}
+
+init();
+</script>
+</body>
+</html>
