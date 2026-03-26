@@ -338,6 +338,15 @@ async function main() {
   const pageGenerate = $("page-generate");
   const pageMetrics = $("page-metrics");
   const pageClinical = $("page-clinical-report");
+  const pageProfile = $("page-profile");
+
+  // Bottom tabs
+  const bottomTabs = $("bottomTabs");
+  const tabGenerate = $("tab-generate");
+  const tabStart = $("tab-start");
+  const tabProgress = $("tab-progress");
+  const tabProfile = $("tab-profile");
+  const profileUserId = $("profileUserId");
 
   const reportsSessionId = $("reportsSessionId");
   const generateReportBtn = $("generateReportBtn");
@@ -387,6 +396,16 @@ async function main() {
     pageGenerate?.classList.toggle("active", normalized === "/generate");
     pageMetrics?.classList.toggle("active", normalized === "/metrics");
     pageClinical?.classList.toggle("active", normalized === "/clinical-report");
+    pageProfile?.classList.toggle("active", normalized === "/profile");
+
+    // Bottom tab bar: hide on splash, show everywhere else.
+    if (bottomTabs) bottomTabs.classList.toggle("hidden", normalized === "/splash");
+
+    // Active tab highlighting based on normalized route.
+    if (tabGenerate) tabGenerate.classList.toggle("active", normalized === "/generate");
+    if (tabStart) tabStart.classList.toggle("active", normalized === "/coach");
+    if (tabProgress) tabProgress.classList.toggle("active", normalized === "/metrics");
+    if (tabProfile) tabProfile.classList.toggle("active", normalized === "/profile");
   }
 
   function stopCoachingSessionIfRunning() {
@@ -1088,6 +1107,12 @@ async function main() {
     if (homeProgress) homeProgress.addEventListener("click", () => (window.location.hash = "/metrics"));
     if (homeClinical) homeClinical.addEventListener("click", () => (window.location.hash = "/clinical-report"));
     if (clinicalBackBtn) clinicalBackBtn.addEventListener("click", () => (window.location.hash = "/home"));
+
+    // Bottom tabs
+    if (tabGenerate) tabGenerate.addEventListener("click", () => (window.location.hash = "/generate"));
+    if (tabStart) tabStart.addEventListener("click", () => (window.location.hash = "/upload"));
+    if (tabProgress) tabProgress.addEventListener("click", () => (window.location.hash = "/metrics"));
+    if (tabProfile) tabProfile.addEventListener("click", () => (window.location.hash = "/profile"));
   }
 
   window.addEventListener("hashchange", async () => {
@@ -1125,6 +1150,7 @@ async function main() {
   // Initial load
   setActiveRoute(getRouteFromHash());
   bindNav();
+  if (profileUserId) profileUserId.textContent = userId;
   await maybeRefreshMetricsForRoute(currentRoute);
   startSplashTimer();
 

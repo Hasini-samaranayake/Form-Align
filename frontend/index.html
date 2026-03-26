@@ -44,7 +44,7 @@
       .wrap {
         max-width: 1100px;
         margin: 0 auto;
-        padding: 18px 20px 60px;
+        padding: 18px 20px 110px;
       }
       .wrap.full {
         max-width: none;
@@ -303,6 +303,43 @@
         color: var(--text);
         outline: none;
       }
+
+      .bottomTabs {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 50;
+        background: rgba(11, 18, 32, 0.85);
+        border-top: 1px solid var(--border);
+        backdrop-filter: blur(8px);
+        padding: 8px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+      }
+      .bottomTabs.hidden {
+        display: none;
+      }
+      .bottomTabsGrid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      .tabBtn {
+        width: 100%;
+        border: 1px solid transparent;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 14px;
+        padding: 12px 8px;
+        color: var(--muted);
+        font-family: inherit;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 12px;
+      }
+      .tabBtn.active {
+        color: var(--text);
+        border-color: rgba(74, 108, 247, 0.65);
+        background: rgba(74, 108, 247, 0.18);
+      }
     </style>
   </head>
   <body>
@@ -554,7 +591,34 @@
           <div class="small" id="clinicalReportStatus" style="margin-top: 10px;">-</div>
         </div>
       </div>
+
+      <!-- Profile page -->
+      <div id="page-profile" class="page">
+        <div class="card">
+          <h2>Profile & settings</h2>
+          <div class="small" style="margin-bottom: 12px;">
+            Demo user ID: <span class="mono" id="profileUserId">-</span>
+          </div>
+          <div class="row" style="margin-bottom: 10px;">
+            <button id="profileResetBtn" class="primary" type="button" style="flex: 1;">Reset demo</button>
+            <button id="profileClearLocalBtn" type="button" style="flex: 1;">Clear local view</button>
+          </div>
+          <div class="small" style="margin-top: 10px; line-height: 1.5;">
+            This MVP stores sessions on the backend (Progress/metrics come from recorded sessions).
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Bottom tab bar -->
+    <nav class="bottomTabs hidden" id="bottomTabs" aria-label="Bottom navigation">
+      <div class="bottomTabsGrid">
+        <button class="tabBtn" id="tab-generate" type="button" data-tab="generate">Generate</button>
+        <button class="tabBtn" id="tab-start" type="button" data-tab="start">Start</button>
+        <button class="tabBtn" id="tab-progress" type="button" data-tab="progress">Progress</button>
+        <button class="tabBtn" id="tab-profile" type="button" data-tab="profile">Profile</button>
+      </div>
+    </nav>
 
     <!-- Pose detection -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
