@@ -45,17 +45,6 @@
         height: 48px;
         width: auto;
         display: block;
-        mix-blend-mode: multiply;
-      }
-      .logoBadge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(10, 16, 30, 0.58);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        border-radius: 14px;
-        padding: 8px 12px;
-        backdrop-filter: blur(6px);
       }
       .wrap {
         max-width: 1100px;
@@ -104,7 +93,6 @@
         width: auto;
         display: block;
         margin: 0 auto;
-        mix-blend-mode: multiply;
       }
       .slogan {
         margin-top: 10px;
@@ -348,7 +336,7 @@
       }
       .bottomTabsGrid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 8px;
       }
       .tabBtn {
@@ -459,9 +447,7 @@
   </head>
   <body>
     <header>
-      <div class="logoBadge">
-        <img class="brandLogo" src="../assets/form-align-logo.png" alt="Form Align logo" />
-      </div>
+      <img class="brandLogo" src="../assets/form-align-logo.png" alt="Form Align logo" />
       <div class="small mono" id="statusPill">Idle</div>
     </header>
     <div class="wrap">
@@ -469,9 +455,7 @@
       <div id="page-splash" class="page active">
         <div class="splash center">
           <div class="splashCard" id="splashCard">
-            <div class="logoBadge">
-              <img class="logoMark" src="../assets/form-align-logo.png" alt="Form Align logo" />
-            </div>
+            <img class="logoMark" src="../assets/form-align-logo.png" alt="Form Align logo" />
             <div class="slogan">
               Real-time exercise form & posture coach. Interpretable feedback to bridge at-home rehab and clinical physiotherapy.
             </div>
@@ -784,9 +768,7 @@
     <!-- Bottom tab bar -->
     <nav class="bottomTabs hidden" id="bottomTabs" aria-label="Bottom navigation">
       <div class="bottomTabsGrid">
-        <button class="tabBtn" id="tab-generate" type="button" data-tab="generate">Generate</button>
-        <button class="tabBtn" id="tab-start" type="button" data-tab="start">Start</button>
-        <button class="tabBtn" id="tab-progress" type="button" data-tab="progress">Progress</button>
+        <button class="tabBtn" id="tab-dashboard" type="button" data-tab="dashboard">Dashboard</button>
         <button class="tabBtn" id="tab-profile" type="button" data-tab="profile">Profile</button>
       </div>
     </nav>

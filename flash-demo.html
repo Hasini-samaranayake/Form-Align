@@ -53,17 +53,6 @@
     height: 50px;
     width: auto;
     display: block;
-    mix-blend-mode: multiply;
-  }
-  .logo-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(10, 16, 30, 0.58);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 14px;
-    padding: 8px 12px;
-    backdrop-filter: blur(6px);
   }
 
   .gear-btn {
@@ -684,7 +673,7 @@
     background: var(--card-bg);
     border-top: 1px solid var(--border);
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     z-index: 20;
     padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
   }
@@ -713,9 +702,7 @@
 <body>
 
 <header>
-  <div class="logo-badge">
-    <img class="brand-logo" src="assets/form-align-logo.png" alt="Form Align logo">
-  </div>
+  <img class="brand-logo" src="assets/form-align-logo.png" alt="Form Align logo">
   <button class="gear-btn" id="openSettings" aria-label="Settings">&#9881;</button>
 </header>
 
@@ -895,9 +882,7 @@
 </main>
 
 <nav class="bottom-tabs" aria-label="Bottom navigation">
-  <button class="tab-btn" data-tab="generate">Generate</button>
-  <button class="tab-btn" data-tab="start">Start</button>
-  <button class="tab-btn" data-tab="progress">Progress</button>
+  <button class="tab-btn" data-tab="home">Dashboard</button>
   <button class="tab-btn" data-tab="profile">Profile</button>
 </nav>
 
@@ -1065,7 +1050,9 @@ function setActiveTab(tab) {
     el.classList.toggle('active', el.id === `page-${tab}`);
   });
   document.querySelectorAll('.tab-btn').forEach((btn) => {
-    btn.classList.toggle('active', btn.dataset.tab === tab);
+    const isDashboardBtn = btn.dataset.tab === 'home';
+    const isActive = isDashboardBtn ? tab !== 'profile' : btn.dataset.tab === tab;
+    btn.classList.toggle('active', isActive);
   });
 
   // Make switching feel immediate: new page starts at the top.

@@ -342,9 +342,7 @@ async function main() {
 
   // Bottom tabs
   const bottomTabs = $("bottomTabs");
-  const tabGenerate = $("tab-generate");
-  const tabStart = $("tab-start");
-  const tabProgress = $("tab-progress");
+  const tabDashboard = $("tab-dashboard");
   const tabProfile = $("tab-profile");
   const profileUserId = $("profileUserId");
   const pairMatBtn = $("pairMatBtn");
@@ -408,9 +406,7 @@ async function main() {
     if (bottomTabs) bottomTabs.classList.toggle("hidden", normalized === "/splash");
 
     // Active tab highlighting based on normalized route.
-    if (tabGenerate) tabGenerate.classList.toggle("active", normalized === "/generate");
-    if (tabStart) tabStart.classList.toggle("active", normalized === "/coach");
-    if (tabProgress) tabProgress.classList.toggle("active", normalized === "/metrics");
+    if (tabDashboard) tabDashboard.classList.toggle("active", normalized !== "/profile" && normalized !== "/splash");
     if (tabProfile) tabProfile.classList.toggle("active", normalized === "/profile");
   }
 
@@ -1186,9 +1182,7 @@ async function main() {
     if (clinicalBackBtn) clinicalBackBtn.addEventListener("click", () => (window.location.hash = "/home"));
 
     // Bottom tabs
-    if (tabGenerate) tabGenerate.addEventListener("click", () => (window.location.hash = "/generate"));
-    if (tabStart) tabStart.addEventListener("click", () => (window.location.hash = "/upload"));
-    if (tabProgress) tabProgress.addEventListener("click", () => (window.location.hash = "/metrics"));
+    if (tabDashboard) tabDashboard.addEventListener("click", () => (window.location.hash = "/home"));
     if (tabProfile) tabProfile.addEventListener("click", () => (window.location.hash = "/profile"));
   }
 
