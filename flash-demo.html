@@ -9,12 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0b1220;
-    --card-bg: #121b2e;
+    --bg: #070d18;
+    --card-bg: #121a2a;
+    --bg-soft: #0f1728;
     --text: #e7eefc;
     --text-secondary: #9bb0d3;
     --border: rgba(255, 255, 255, 0.14);
     --accent-text: #4a6cf7;
+    --accent-green: #00b56a;
     --accent-image: #e85d75;
     --accent-audio: #f59e0b;
     --accent-video: #10b981;
@@ -27,7 +29,10 @@
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
+    background:
+      radial-gradient(900px 500px at 8% 12%, rgba(74, 108, 247, 0.2), transparent 45%),
+      radial-gradient(800px 520px at 92% 20%, rgba(0, 181, 106, 0.14), transparent 48%),
+      var(--bg);
     color: var(--text);
     min-height: 100vh;
   }
@@ -37,7 +42,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 16px 24px;
-    background: var(--card-bg);
+    background: rgba(12, 19, 34, 0.88);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
@@ -400,20 +405,75 @@
 
   .home-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .hero-split {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 16px;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .hero-split {
+      grid-template-columns: 1fr;
+    }
   }
 
   .home-btn {
     border: 1px solid var(--border);
-    background: var(--card-bg);
-    border-radius: 12px;
-    min-height: 110px;
-    padding: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 14px;
+    min-height: 92px;
+    padding: 16px;
     text-align: left;
     cursor: pointer;
     font-family: inherit;
     box-shadow: var(--shadow);
+  }
+  .device-mock {
+    background: #dfeade;
+    border-radius: 22px;
+    border: 10px solid #0e1527;
+    padding: 16px;
+    color: #10221a;
+    min-height: 520px;
+  }
+  .mock-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .mock-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .mock-stat {
+    background: #f2f5f2;
+    border-radius: 12px;
+    padding: 12px;
+  }
+  .mock-stat strong {
+    display: block;
+    font-size: 1.6rem;
+    color: #00a05d;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .mock-graph {
+    background: #f2f5f2;
+    border-radius: 12px;
+    padding: 12px;
+    min-height: 170px;
+    margin-bottom: 12px;
+  }
+  .mock-next {
+    background: #00a65f;
+    color: #e8fff4;
+    border-radius: 12px;
+    padding: 12px;
   }
 
   .home-btn .title {
@@ -439,6 +499,32 @@
   .panel h2 {
     font-size: 1.1rem;
     margin-bottom: 12px;
+  }
+
+  .hero-panel {
+    background:
+      linear-gradient(125deg, rgba(255, 255, 255, 0.03), rgba(0, 181, 106, 0.07)),
+      var(--card-bg);
+  }
+
+  .hero-title {
+    font-size: 2rem;
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+
+  .pair-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-top: 14px;
+  }
+
+  .pair-status {
+    margin-top: 8px;
+    font-size: 0.86rem;
+    color: var(--text-secondary);
   }
 
   .grid-2 {
@@ -489,7 +575,7 @@
   }
 
   .btn.success {
-    background: #16a34a;
+    background: var(--accent-green);
   }
 
   .btn:disabled {
@@ -597,26 +683,56 @@
 
 <main class="app-shell">
   <section class="page active" id="page-home">
-    <div class="panel">
-      <h2>Workout Home</h2>
-      <p class="hint" style="margin-bottom:10px">Choose one area to continue.</p>
-      <div class="home-grid">
-        <button class="home-btn" data-go-tab="generate">
-          <div class="title">Generate Workout</div>
-          <div class="desc">Create a custom workout using goals + AI.</div>
-        </button>
-        <button class="home-btn" data-go-tab="start">
-          <div class="title">Start My Own Workout</div>
-          <div class="desc">Build your own routine and begin now.</div>
-        </button>
-        <button class="home-btn" data-go-tab="progress">
-          <div class="title">Progress</div>
-          <div class="desc">See workout history and coaching reports.</div>
-        </button>
-        <button class="home-btn" data-go-tab="profile">
-          <div class="title">Profile</div>
-          <div class="desc">API key and app preferences.</div>
-        </button>
+    <div class="panel hero-panel">
+      <div class="hero-split">
+        <div>
+          <h2 class="hero-title">Your Personal<br>Pilates Studio</h2>
+          <p class="hint" style="margin-bottom:12px">The Form Align app transforms your mat into an intelligent training partner with live coaching and progress tracking.</p>
+          <div class="home-grid">
+            <button class="home-btn" data-go-tab="generate">
+              <div class="title">Guided Workouts</div>
+              <div class="desc">AI-powered classes from beginner to advanced.</div>
+            </button>
+            <button class="home-btn" data-go-tab="start">
+              <div class="title">Achievements</div>
+              <div class="desc">Track milestones and celebrate every streak.</div>
+            </button>
+            <button class="home-btn" data-go-tab="progress">
+              <div class="title">Community</div>
+              <div class="desc">Share your practice and learn with others.</div>
+            </button>
+            <button class="home-btn" data-go-tab="profile">
+              <div class="title">Analytics</div>
+              <div class="desc">Monitor trends in form, balance, and control.</div>
+            </button>
+          </div>
+        </div>
+        <div class="device-mock" aria-hidden="true">
+          <div class="mock-title">Form Align</div>
+          <div class="mock-stats">
+            <div class="mock-stat"><strong>24</strong><span>Sessions</span></div>
+            <div class="mock-stat"><strong>12h</strong><span>This Month</span></div>
+          </div>
+          <div class="mock-graph">
+            <div style="font-weight:700;margin-bottom:8px;">Weekly Progress</div>
+            <div style="opacity:0.6;">M&nbsp;&nbsp;T&nbsp;&nbsp;W&nbsp;&nbsp;T&nbsp;&nbsp;F&nbsp;&nbsp;S&nbsp;&nbsp;S</div>
+          </div>
+          <div class="mock-next">
+            <div style="font-weight:700;">Next Session</div>
+            <div>Core Strength Flow</div>
+            <div style="opacity:0.85;">30 min &middot; Intermediate</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pair-card">
+        <h2 style="margin-bottom:8px">Pair Pilates Mat (Bluetooth)</h2>
+        <p class="hint">Connect your smart mat to sync pressure and session context.</p>
+        <div class="row-actions">
+          <button class="btn success" id="pairMatBtn" type="button">Pair via Bluetooth</button>
+          <button class="btn secondary" id="disconnectMatBtn" type="button" disabled>Disconnect</button>
+        </div>
+        <div id="pairMatStatus" class="pair-status">Not paired.</div>
       </div>
     </div>
   </section>
@@ -1279,6 +1395,61 @@ function setupProgressActions() {
   };
 }
 
+function setupBluetoothPairing() {
+  const pairBtn = document.getElementById('pairMatBtn');
+  const disconnectBtn = document.getElementById('disconnectMatBtn');
+  const statusEl = document.getElementById('pairMatStatus');
+  if (!pairBtn || !disconnectBtn || !statusEl) return;
+
+  let btDevice = null;
+  let btServer = null;
+  const isSupported = typeof navigator !== 'undefined' && !!navigator.bluetooth && window.isSecureContext;
+
+  function renderStatus(text) {
+    statusEl.textContent = text;
+  }
+
+  if (!isSupported) {
+    pairBtn.disabled = true;
+    renderStatus('Bluetooth pairing unavailable in this browser/context. Use HTTPS Chromium.');
+    return;
+  }
+
+  pairBtn.onclick = async () => {
+    try {
+      pairBtn.disabled = true;
+      renderStatus('Searching for Pilates mat...');
+      btDevice = await navigator.bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: ['battery_service', 'device_information']
+      });
+      btDevice.addEventListener('gattserverdisconnected', () => {
+        btServer = null;
+        disconnectBtn.disabled = true;
+        renderStatus(`Disconnected: ${btDevice?.name || 'Unknown device'}`);
+      });
+      btServer = await btDevice.gatt?.connect();
+      disconnectBtn.disabled = false;
+      renderStatus(`Paired: ${btDevice?.name || 'Unknown device'}`);
+    } catch (err) {
+      renderStatus(`Pairing canceled or failed: ${err?.message || String(err)}`);
+    } finally {
+      pairBtn.disabled = false;
+    }
+  };
+
+  disconnectBtn.onclick = () => {
+    try {
+      if (btDevice?.gatt?.connected) btDevice.gatt.disconnect();
+      btServer = null;
+      disconnectBtn.disabled = true;
+      renderStatus('Disconnected from Pilates mat.');
+    } catch (err) {
+      renderStatus(`Disconnect error: ${err?.message || String(err)}`);
+    }
+  };
+}
+
 function init() {
   const settingsModal = document.getElementById('settingsModal');
   if (settingsModal) settingsModal.remove();
@@ -1288,6 +1459,7 @@ function init() {
   setupStartWorkout();
   setupCoaching();
   setupProgressActions();
+  setupBluetoothPairing();
   renderProgress();
   setActiveTab('home');
 }

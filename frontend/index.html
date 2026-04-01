@@ -6,12 +6,14 @@
     <title>FormAlign</title>
     <style>
       :root {
-        --bg: #0b1220;
-        --card: #121b2e;
+        --bg: #070d18;
+        --card: #121a2a;
+        --card-soft: #0f1728;
         --text: #e7eefc;
         --muted: #9bb0d3;
         --border: rgba(255, 255, 255, 0.12);
         --accent: #4a6cf7;
+        --accent-green: #00b56a;
         --danger: #ef4444;
         --ok: #10b981;
         --warn: #f59e0b;
@@ -25,7 +27,10 @@
         margin: 0;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
           "Apple Color Emoji", "Segoe UI Emoji";
-        background: var(--bg);
+        background:
+          radial-gradient(900px 500px at 8% 12%, rgba(74, 108, 247, 0.2), transparent 45%),
+          radial-gradient(800px 520px at 92% 20%, rgba(0, 181, 106, 0.14), transparent 48%),
+          var(--bg);
         color: var(--text);
       }
       header {
@@ -112,8 +117,19 @@
 
       .homeGrid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 12px;
+      }
+      .heroSplit {
+        display: grid;
+        grid-template-columns: 1.08fr 0.92fr;
+        gap: 16px;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        .heroSplit {
+          grid-template-columns: 1fr;
+        }
       }
       @media (max-width: 720px) {
         .homeGrid {
@@ -122,9 +138,9 @@
       }
       .homeBtn {
         padding: 16px;
-        border-radius: 16px;
+        border-radius: 14px;
         text-align: left;
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(255, 255, 255, 0.03);
         border: 1px solid var(--border);
       }
       .homeBtn strong {
@@ -340,6 +356,66 @@
         border-color: rgba(74, 108, 247, 0.65);
         background: rgba(74, 108, 247, 0.18);
       }
+
+      .heroTitle {
+        font-size: 38px;
+        line-height: 1.05;
+        margin: 0 0 12px;
+      }
+      .pairingCard {
+        background: var(--card-soft);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px;
+        margin-top: 14px;
+      }
+      .pairingStatus {
+        margin-top: 8px;
+      }
+      .deviceMock {
+        background: #dfeade;
+        border-radius: 22px;
+        border: 10px solid #0e1527;
+        padding: 16px;
+        color: #10221a;
+        min-height: 520px;
+      }
+      .mockTitle {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+      .mockStats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .mockStat {
+        background: #f2f5f2;
+        border-radius: 12px;
+        padding: 12px;
+      }
+      .mockStat strong {
+        display: block;
+        font-size: 28px;
+        color: #00a05d;
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+      .mockGraph {
+        background: #f2f5f2;
+        border-radius: 12px;
+        padding: 12px;
+        min-height: 170px;
+        margin-bottom: 12px;
+      }
+      .mockNext {
+        background: #00a65f;
+        color: #e8fff4;
+        border-radius: 12px;
+        padding: 12px;
+      }
     </style>
   </head>
   <body>
@@ -364,24 +440,59 @@
       <!-- Home -->
       <div id="page-home" class="page">
         <div class="card">
-          <h2>Choose what you want to do</h2>
-          <div class="homeGrid">
-            <button id="homeGenerate" class="homeBtn primary" type="button">
-              <strong>Generate my workout</strong>
-              <span>Enter goals and let AI build your routine.</span>
-            </button>
-            <button id="homeUpload" class="homeBtn" type="button">
-              <strong>Upload my own workout</strong>
-              <span>Paste your PT/workout instructions and start coaching.</span>
-            </button>
-            <button id="homeProgress" class="homeBtn" type="button">
-              <strong>View my progress</strong>
-              <span>See frequency, correctness, and common form issues.</span>
-            </button>
-            <button id="homeClinical" class="homeBtn" type="button">
-              <strong>Generate clinical report</strong>
-              <span>Create a professional PDF for a selected date range.</span>
-            </button>
+          <div class="heroSplit">
+            <div>
+              <h2 class="heroTitle">Your Personal<br>Pilates Studio</h2>
+              <div class="small" style="margin-bottom: 12px;">
+                The Form Align app transforms your mat into an intelligent training partner with live coaching and progress tracking.
+              </div>
+              <div class="homeGrid">
+                <button id="homeGenerate" class="homeBtn primary" type="button">
+                  <strong>Guided Workouts</strong>
+                  <span>500+ expert-led classes from beginner to advanced.</span>
+                </button>
+                <button id="homeUpload" class="homeBtn" type="button">
+                  <strong>Achievements</strong>
+                  <span>Unlock milestones and celebrate your consistency.</span>
+                </button>
+                <button id="homeProgress" class="homeBtn" type="button">
+                  <strong>Community</strong>
+                  <span>Connect with other practitioners and share progress.</span>
+                </button>
+                <button id="homeClinical" class="homeBtn" type="button">
+                  <strong>Analytics</strong>
+                  <span>Monitor trends in form, balance, and improvements.</span>
+                </button>
+              </div>
+            </div>
+            <div class="deviceMock" aria-hidden="true">
+              <div class="mockTitle">Form Align</div>
+              <div class="mockStats">
+                <div class="mockStat"><strong>24</strong><span>Sessions</span></div>
+                <div class="mockStat"><strong>12h</strong><span>This Month</span></div>
+              </div>
+              <div class="mockGraph">
+                <div style="font-weight:700; margin-bottom: 8px;">Weekly Progress</div>
+                <div style="opacity: 0.6;">M&nbsp;&nbsp;T&nbsp;&nbsp;W&nbsp;&nbsp;T&nbsp;&nbsp;F&nbsp;&nbsp;S&nbsp;&nbsp;S</div>
+              </div>
+              <div class="mockNext">
+                <div style="font-weight:700;">Next Session</div>
+                <div>Core Strength Flow</div>
+                <div style="opacity:0.85;">30 min &middot; Intermediate</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pairingCard">
+            <h2 style="margin-bottom: 8px;">Pair Pilates Mat (Bluetooth)</h2>
+            <div class="small">
+              Connect your smart mat for richer posture context and session insights.
+            </div>
+            <div class="row" style="margin-top: 10px;">
+              <button id="pairMatBtn" class="primary" type="button">Pair via Bluetooth</button>
+              <button id="disconnectMatBtn" type="button" disabled>Disconnect</button>
+            </div>
+            <div class="small pairingStatus mono" id="pairMatStatus">Not paired.</div>
           </div>
         </div>
       </div>

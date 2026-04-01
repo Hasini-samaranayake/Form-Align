@@ -347,6 +347,9 @@ async function main() {
   const tabProgress = $("tab-progress");
   const tabProfile = $("tab-profile");
   const profileUserId = $("profileUserId");
+  const pairMatBtn = $("pairMatBtn");
+  const disconnectMatBtn = $("disconnectMatBtn");
+  const pairMatStatus = $("pairMatStatus");
 
   const reportsSessionId = $("reportsSessionId");
   const generateReportBtn = $("generateReportBtn");
@@ -421,6 +424,63 @@ async function main() {
 
   function setStatus(text) {
     statusPill.textContent = text;
+  }
+
+  function setupBluetoothPairing() {
+    if (!pairMatBtn || !disconnectMatBtn || !pairMatStatus) return;
+
+    let btDevice = null;
+    let btServer = null;
+    const supported = typeof navigator !== "undefined" && !!navigator.bluetooth && window.isSecureContext;
+
+    const render = (text) => {
+      pairMatStatus.textContent = text;
+    };
+
+    if (!supported) {
+      pairMatBtn.disabled = true;
+      disconnectMatBtn.disabled = true;
+      render("Bluetooth unavailable in this browser/context. Use HTTPS Chromium.");
+      return;
+    }
+
+    pairMatBtn.addEventListener("click", async () => {
+      try {
+        pairMatBtn.disabled = true;
+        render("Searching for Pilates mat...");
+        btDevice = await navigator.bluetooth.requestDevice({
+          acceptAllDevices: true,
+          optionalServices: ["battery_service", "device_information"],
+        });
+        btDevice.addEventListener("gattserverdisconnected", () => {
+          btServer = null;
+          disconnectMatBtn.disabled = true;
+          render(`Disconnected: ${btDevice?.name || "Unknown device"}`);
+        });
+        btServer = await btDevice.gatt?.connect();
+        if (btServer) {
+          disconnectMatBtn.disabled = false;
+          render(`Paired: ${btDevice?.name || "Unknown device"}`);
+        } else {
+          render("Device selected, but GATT connection unavailable.");
+        }
+      } catch (e) {
+        render(`Pairing canceled or failed: ${e?.message || String(e)}`);
+      } finally {
+        pairMatBtn.disabled = false;
+      }
+    });
+
+    disconnectMatBtn.addEventListener("click", () => {
+      try {
+        if (btDevice?.gatt?.connected) btDevice.gatt.disconnect();
+        btServer = null;
+        disconnectMatBtn.disabled = true;
+        render("Disconnected from Pilates mat.");
+      } catch (e) {
+        render(`Disconnect error: ${e?.message || String(e)}`);
+      }
+    });
   }
 
   function setCoachPill(text, kind = "neutral") {
@@ -1150,6 +1210,7 @@ async function main() {
   // Initial load
   setActiveRoute(getRouteFromHash());
   bindNav();
+  setupBluetoothPairing();
   if (profileUserId) profileUserId.textContent = userId;
   await maybeRefreshMetricsForRoute(currentRoute);
   startSplashTimer();
