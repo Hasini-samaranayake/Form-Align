@@ -368,6 +368,9 @@ async function main() {
   let frequencyChart = null;
   const issueStatsEl = $("issueStats");
   const reportStatusEl = $("reportStatus");
+  const clinicalAnalyticsUpdated = $("clinicalAnalyticsUpdated");
+  const clinicalMetricsSummary = $("clinicalMetricsSummary");
+  const clinicalIssueStats = $("clinicalIssueStats");
 
   // Clinical report UI
   const clinicalStartDate = $("clinicalStartDate");
@@ -910,6 +913,12 @@ async function main() {
     const summary = data.summary;
     summaryLastUpdated.textContent = `Updated ${new Date().toLocaleTimeString()}`;
     metricsSummary.innerHTML = summary.avg_correctness == null ? "-" : `Average correctness: <b>${summary.avg_correctness.toFixed(0)}%</b> (snapshots: ${summary.snapshots})`;
+    if (clinicalAnalyticsUpdated) {
+      clinicalAnalyticsUpdated.textContent = summaryLastUpdated.textContent;
+    }
+    if (clinicalMetricsSummary) {
+      clinicalMetricsSummary.innerHTML = metricsSummary.innerHTML;
+    }
   }
 
   async function refreshFrequencyChart() {
@@ -1005,6 +1014,9 @@ async function main() {
 
     if (issues.length === 0) {
       issueStatsEl.textContent = "No form issues logged in this lookback window yet.";
+      if (clinicalIssueStats) {
+        clinicalIssueStats.textContent = issueStatsEl.textContent;
+      }
       return;
     }
 
@@ -1026,6 +1038,9 @@ async function main() {
         `;
       })
       .join("");
+    if (clinicalIssueStats) {
+      clinicalIssueStats.innerHTML = issueStatsEl.innerHTML;
+    }
   }
 
   $("refreshBtn").addEventListener("click", async () => {
@@ -1153,11 +1168,13 @@ async function main() {
 
   async function maybeRefreshMetricsForRoute(route) {
     const r = route === "/upload" ? "/coach" : route;
-    if (r !== "/metrics") return;
+    if (r !== "/metrics" && r !== "/clinical-report") return;
     await refreshSessions();
     await refreshMetricsSummary();
-    await refreshFrequencyChart();
     await refreshIssueStats();
+    if (r === "/metrics") {
+      await refreshFrequencyChart();
+    }
   }
 
   function bindNav() {

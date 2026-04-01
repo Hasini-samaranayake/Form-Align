@@ -392,9 +392,9 @@
       }
       .brandStrip img {
         width: 100%;
-        height: 86px;
+        height: 140px;
         object-fit: cover;
-        object-position: top center;
+        object-position: center 18%;
         border-radius: 10px;
         border: 1px solid var(--border);
         background: rgba(10, 16, 30, 0.58);
@@ -408,7 +408,7 @@
           height: 88px;
         }
         .brandStrip img {
-          height: 70px;
+          height: 118px;
         }
       }
       .deviceMock {
@@ -495,8 +495,8 @@
                   <span>500+ expert-led classes from beginner to advanced.</span>
                 </button>
                 <button id="homeUpload" class="homeBtn" type="button">
-                  <strong>Achievements</strong>
-                  <span>Unlock milestones and celebrate your consistency.</span>
+                  <strong>Start my own workout</strong>
+                  <span>Input your own exercises and monitor your form and progress.</span>
                 </button>
                 <button id="homeProgress" class="homeBtn" type="button">
                   <strong>Community</strong>
@@ -746,6 +746,20 @@
           </div>
 
           <div class="small" id="clinicalReportStatus" style="margin-top: 10px;">-</div>
+
+          <div class="divider"></div>
+
+          <h2>Analytics</h2>
+          <div class="item">
+            <div class="itemTitle">
+              <div><span class="tag ok">Summary</span></div>
+              <div class="small mono" id="clinicalAnalyticsUpdated">-</div>
+            </div>
+            <div class="small" id="clinicalMetricsSummary" style="margin-top: 8px;">-</div>
+            <div class="divider"></div>
+            <div class="small" style="margin-bottom: 8px;">Most common form issues</div>
+            <div class="small" id="clinicalIssueStats">-</div>
+          </div>
         </div>
       </div>
 
