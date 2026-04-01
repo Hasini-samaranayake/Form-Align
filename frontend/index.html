@@ -238,25 +238,6 @@
       .poseCard.active span {
         color: #d6ffea;
       }
-      .poseStats {
-        margin-top: 16px;
-        padding-top: 14px;
-        border-top: 1px solid rgba(255, 255, 255, 0.14);
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-      .poseStat {
-        font-size: 17px;
-        color: #12d184;
-        font-weight: 800;
-      }
-      .poseStat span {
-        display: block;
-        font-size: 13px;
-        color: var(--muted);
-        font-weight: 500;
-      }
       .homeBtn strong {
         display: block;
         font-size: 14px;
@@ -494,7 +475,7 @@
       }
       .brandStrip img {
         width: 100%;
-        height: 140px;
+        height: 124px;
         object-fit: cover;
         object-position: center 18%;
         border-radius: 10px;
@@ -512,7 +493,7 @@
           height: 96px;
         }
         .brandStrip img {
-          height: 118px;
+          height: 102px;
         }
       }
       .deviceMock {
@@ -552,12 +533,6 @@
         padding: 12px;
         min-height: 170px;
         margin-bottom: 12px;
-      }
-      .mockNext {
-        background: #00a65f;
-        color: #e8fff4;
-        border-radius: 12px;
-        padding: 12px;
       }
     </style>
   </head>
@@ -601,7 +576,7 @@
               </div>
               <div class="homeGrid">
                 <button id="homeGenerate" class="poseCard active" type="button">
-                  <strong>Guided Workouts</strong>
+                  <strong>Generate my workout</strong>
                   <span>500+ expert-led classes from beginner to advanced.</span>
                 </button>
                 <button id="homeUpload" class="poseCard" type="button">
@@ -609,17 +584,13 @@
                   <span>Input your own exercises and monitor your form and progress.</span>
                 </button>
                 <button id="homeProgress" class="poseCard" type="button">
-                  <strong>Community</strong>
-                  <span>Connect with other practitioners and share progress.</span>
-                </button>
-                <button id="homeClinical" class="poseCard" type="button">
                   <strong>Analytics</strong>
                   <span>Monitor trends in form, balance, and improvements.</span>
                 </button>
-              </div>
-              <div class="poseStats">
-                <div class="poseStat">10,000+<span>Pressure sensors</span></div>
-                <div class="poseStat">16ms<span>Response time</span></div>
+                <button id="homeClinical" class="poseCard" type="button">
+                  <strong>Generate clinician report</strong>
+                  <span>Create a professional clinician report from your tracked sessions.</span>
+                </button>
               </div>
             </div>
           </div>
@@ -635,7 +606,7 @@
             </div>
             <div class="small pairingStatus mono" id="pairMatStatus">Not paired.</div>
             <div class="brandStrip" aria-label="Form Align logo variation">
-              <img src="../assets/logo-variants/3.png" alt="Form Align logo variation one" />
+              <img src="../assets/logo-variants/4.png" alt="Form Align logo variation one" />
             </div>
           </div>
         </div>
