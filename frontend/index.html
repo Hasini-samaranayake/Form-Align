@@ -41,10 +41,20 @@
         justify-content: space-between;
         gap: 12px;
       }
-      header h1 {
-        font-size: 16px;
-        margin: 0;
-        font-weight: 750;
+      .brandLogo {
+        height: 48px;
+        width: auto;
+        display: block;
+      }
+      .logoBadge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(10, 16, 30, 0.58);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 14px;
+        padding: 8px 12px;
+        backdrop-filter: blur(6px);
       }
       .wrap {
         max-width: 1100px;
@@ -89,10 +99,10 @@
         overflow: hidden;
       }
       .logoMark {
-        font-weight: 900;
-        letter-spacing: 0.5px;
-        font-size: 40px;
-        line-height: 1.1;
+        height: 120px;
+        width: auto;
+        display: block;
+        margin: 0 auto;
       }
       .slogan {
         margin-top: 10px;
@@ -372,6 +382,32 @@
       .pairingStatus {
         margin-top: 8px;
       }
+      .brandStrip {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .brandStrip img {
+        width: 100%;
+        height: 86px;
+        object-fit: contain;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(10, 16, 30, 0.58);
+        padding: 8px;
+      }
+      @media (max-width: 720px) {
+        .brandLogo {
+          height: 38px;
+        }
+        .logoMark {
+          height: 88px;
+        }
+        .brandStrip img {
+          height: 70px;
+        }
+      }
       .deviceMock {
         background: #dfeade;
         border-radius: 22px;
@@ -420,7 +456,9 @@
   </head>
   <body>
     <header>
-      <h1>FormAlign</h1>
+      <div class="logoBadge">
+        <img class="brandLogo" src="../assets/form-align-logo.png" alt="Form Align logo" />
+      </div>
       <div class="small mono" id="statusPill">Idle</div>
     </header>
     <div class="wrap">
@@ -428,7 +466,9 @@
       <div id="page-splash" class="page active">
         <div class="splash center">
           <div class="splashCard" id="splashCard">
-            <div class="logoMark">FormAlign</div>
+            <div class="logoBadge">
+              <img class="logoMark" src="../assets/form-align-logo.png" alt="Form Align logo" />
+            </div>
             <div class="slogan">
               Real-time exercise form & posture coach. Interpretable feedback to bridge at-home rehab and clinical physiotherapy.
             </div>
@@ -493,6 +533,10 @@
               <button id="disconnectMatBtn" type="button" disabled>Disconnect</button>
             </div>
             <div class="small pairingStatus mono" id="pairMatStatus">Not paired.</div>
+            <div class="brandStrip" aria-label="Form Align logo variations">
+              <img src="../assets/logo-variants/3.png" alt="Form Align logo variation one" />
+              <img src="../assets/logo-variants/4.png" alt="Form Align logo variation two" />
+            </div>
           </div>
         </div>
       </div>

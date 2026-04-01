@@ -49,9 +49,20 @@
     z-index: 10;
   }
 
-  header h1 {
-    font-size: 1.4rem;
-    font-weight: 700;
+  .brand-logo {
+    height: 50px;
+    width: auto;
+    display: block;
+  }
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 16, 30, 0.58);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+    padding: 8px 12px;
+    backdrop-filter: blur(6px);
   }
 
   .gear-btn {
@@ -526,6 +537,29 @@
     font-size: 0.86rem;
     color: var(--text-secondary);
   }
+  .brand-strip {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .brand-strip img {
+    width: 100%;
+    height: 86px;
+    object-fit: contain;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(10, 16, 30, 0.58);
+    padding: 8px;
+  }
+  @media (max-width: 720px) {
+    .brand-logo {
+      height: 38px;
+    }
+    .brand-strip img {
+      height: 70px;
+    }
+  }
 
   .grid-2 {
     display: grid;
@@ -677,7 +711,9 @@
 <body>
 
 <header>
-  <h1>AI Demo</h1>
+  <div class="logo-badge">
+    <img class="brand-logo" src="assets/form-align-logo.png" alt="Form Align logo">
+  </div>
   <button class="gear-btn" id="openSettings" aria-label="Settings">&#9881;</button>
 </header>
 
@@ -733,6 +769,10 @@
           <button class="btn secondary" id="disconnectMatBtn" type="button" disabled>Disconnect</button>
         </div>
         <div id="pairMatStatus" class="pair-status">Not paired.</div>
+        <div class="brand-strip" aria-label="Form Align logo variations">
+          <img src="assets/logo-variants/3.png" alt="Form Align logo variation one">
+          <img src="assets/logo-variants/4.png" alt="Form Align logo variation two">
+        </div>
       </div>
     </div>
   </section>
