@@ -45,6 +45,7 @@
         height: 48px;
         width: auto;
         display: block;
+        mix-blend-mode: multiply;
       }
       .logoBadge {
         display: inline-flex;
@@ -103,6 +104,7 @@
         width: auto;
         display: block;
         margin: 0 auto;
+        mix-blend-mode: multiply;
       }
       .slogan {
         margin-top: 10px;
@@ -385,17 +387,18 @@
       .brandStrip {
         margin-top: 12px;
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 10px;
       }
       .brandStrip img {
         width: 100%;
         height: 86px;
-        object-fit: contain;
+        object-fit: cover;
+        object-position: top center;
         border-radius: 10px;
         border: 1px solid var(--border);
         background: rgba(10, 16, 30, 0.58);
-        padding: 8px;
+        padding: 0;
       }
       @media (max-width: 720px) {
         .brandLogo {
@@ -533,9 +536,8 @@
               <button id="disconnectMatBtn" type="button" disabled>Disconnect</button>
             </div>
             <div class="small pairingStatus mono" id="pairMatStatus">Not paired.</div>
-            <div class="brandStrip" aria-label="Form Align logo variations">
+            <div class="brandStrip" aria-label="Form Align logo variation">
               <img src="../assets/logo-variants/3.png" alt="Form Align logo variation one" />
-              <img src="../assets/logo-variants/4.png" alt="Form Align logo variation two" />
             </div>
           </div>
         </div>
