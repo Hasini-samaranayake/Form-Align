@@ -46,8 +46,9 @@
         width: 52px;
         height: 52px;
         display: block;
-        border-radius: 50%;
-        object-fit: cover;
+        border-radius: 14px;
+        object-fit: contain;
+        background: rgba(10, 18, 32, 0.5);
       }
       .wrap {
         max-width: 1100px;
@@ -92,12 +93,15 @@
         border-radius: 0;
       }
       .logoMark {
-        width: 240px;
-        height: 240px;
+        width: min(88vw, 280px);
+        height: min(88vw, 280px);
+        max-width: 280px;
+        max-height: 280px;
         display: block;
         margin: 0 auto;
-        border-radius: 50%;
-        object-fit: cover;
+        border-radius: 18px;
+        object-fit: contain;
+        background: rgba(10, 18, 32, 0.35);
       }
       .slogan {
         margin-top: 28px;
@@ -641,14 +645,14 @@
   </head>
   <body>
     <header>
-      <img class="brandLogo" src="../assets/form-align-logo-circle.png" alt="Form Align logo" />
+      <img class="brandLogo" src="../assets/form-align-logo-v2.png" alt="Form Align logo" />
     </header>
 
     <!-- Splash / landing (full-width, no content column wrapper) -->
     <div id="page-splash" class="page active">
       <div class="splash center">
         <div id="splashCard">
-          <img class="logoMark" src="../assets/form-align-logo-circle.png" alt="Form Align logo" />
+          <img class="logoMark" src="../assets/form-align-logo-v2.png" alt="Form Align logo" />
           <div class="slogan">
             Real-time exercise form & posture coach. Interpretable feedback to bridge at-home rehab and clinical physiotherapy.
           </div>
