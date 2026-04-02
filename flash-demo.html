@@ -526,25 +526,36 @@
     margin-top: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .brand-strip-cell {
+    margin: 0;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(10, 16, 30, 0.75);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .brand-strip img {
     width: 100%;
-    height: 124px;
-    object-fit: cover;
-    object-position: center 18%;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: rgba(10, 16, 30, 0.58);
-    padding: 0;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
   }
   @media (max-width: 720px) {
     .brand-logo {
       width: 42px;
       height: 42px;
     }
-    .brand-strip img {
-      height: 102px;
+  }
+  @media (max-width: 520px) {
+    .brand-strip {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -712,7 +723,7 @@
           <div class="home-grid">
             <button class="home-btn" data-go-tab="generate">
               <div class="title">Generate my workout</div>
-              <div class="desc">AI-powered classes from beginner to advanced.</div>
+              <div class="desc">Add your workout goals or concerns to generate a custom workout.</div>
             </button>
             <button class="home-btn" data-go-tab="start">
               <div class="title">Start my own workout</div>
@@ -749,8 +760,13 @@
           <button class="btn secondary" id="disconnectMatBtn" type="button" disabled>Disconnect</button>
         </div>
         <div id="pairMatStatus" class="pair-status">Not paired.</div>
-        <div class="brand-strip" aria-label="Form Align logo variation">
-          <img src="assets/logo-variants/4.png" alt="Form Align logo variation">
+        <div class="brand-strip" aria-label="Pilates mat pairing images">
+          <figure class="brand-strip-cell">
+            <img src="assets/logo-variants/3.png" alt="Pilates mat with sensor module" loading="lazy" decoding="async">
+          </figure>
+          <figure class="brand-strip-cell">
+            <img src="assets/logo-variants/4.png" alt="Pilates mat top view" loading="lazy" decoding="async">
+          </figure>
         </div>
       </div>
     </div>

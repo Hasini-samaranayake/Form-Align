@@ -76,37 +76,40 @@
       }
       .splash {
         min-height: 100vh;
-        padding: 28px;
+        padding: 20px 24px;
       }
       .splashCard {
         width: 100%;
-        max-width: 760px;
-        border-radius: 20px;
+        max-width: 1040px;
+        border-radius: 28px;
         border: 1px solid var(--border);
         background: radial-gradient(1200px 700px at 10% 10%, rgba(74, 108, 247, 0.22), transparent 50%),
           radial-gradient(900px 500px at 80% 30%, rgba(16, 185, 129, 0.16), transparent 55%),
           rgba(255, 255, 255, 0.03);
-        padding: 34px 26px;
+        padding: 56px 48px 52px;
         text-align: center;
         overflow: hidden;
       }
       .logoMark {
-        width: 136px;
-        height: 136px;
+        width: 240px;
+        height: 240px;
         display: block;
         margin: 0 auto;
         border-radius: 50%;
         object-fit: cover;
       }
       .slogan {
-        margin-top: 10px;
+        margin-top: 28px;
         color: var(--muted);
-        font-size: 14px;
-        line-height: 1.5;
+        font-size: 20px;
+        line-height: 1.55;
+        max-width: 52em;
+        margin-left: auto;
+        margin-right: auto;
       }
       .splashHint {
-        margin-top: 22px;
-        font-size: 12px;
+        margin-top: 32px;
+        font-size: 17px;
         color: var(--muted);
       }
       .swipeUp {
@@ -147,24 +150,31 @@
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid var(--border);
       }
-      .poseLayout {
-        display: grid;
-        grid-template-columns: 0.95fr 1.05fr;
-        gap: 18px;
+      /* Mat pressure UI: only on workout (coach) page; dots hidden until Bluetooth readings */
+      .mat-workout-panel {
+        margin-bottom: 18px;
       }
-      @media (max-width: 920px) {
-        .poseLayout {
-          grid-template-columns: 1fr;
-        }
-      }
-      .matPanel {
+      .mat-workout-panel .mat-shell {
         background: linear-gradient(180deg, #111a2d, #0e1628);
         border: 1px solid var(--border);
         border-radius: 18px;
         padding: 12px;
       }
+      .mat-workout-panel.session-running .dot {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+      }
+      .mat-workout-panel:not(.mat-live) .dot {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .mat-workout-panel.mat-live:not(.session-running) .dot {
+        visibility: visible;
+        transition: opacity 0.15s ease, transform 0.15s ease;
+      }
       .matGrid {
-        height: 420px;
+        height: 280px;
         border-radius: 14px;
         border: 1px solid rgba(80, 227, 165, 0.2);
         background:
@@ -470,18 +480,27 @@
       .brandStrip {
         margin-top: 12px;
         display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        align-items: stretch;
+      }
+      .brandStripCell {
+        margin: 0;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(10, 16, 30, 0.75);
+        overflow: hidden;
+        aspect-ratio: 4 / 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .brandStrip img {
         width: 100%;
-        height: 124px;
-        object-fit: cover;
-        object-position: center 18%;
-        border-radius: 10px;
-        border: 1px solid var(--border);
-        background: rgba(10, 16, 30, 0.58);
-        padding: 0;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
       }
       @media (max-width: 720px) {
         .brandLogo {
@@ -489,11 +508,22 @@
           height: 42px;
         }
         .logoMark {
-          width: 96px;
-          height: 96px;
+          width: 168px;
+          height: 168px;
         }
-        .brandStrip img {
-          height: 102px;
+        .splashCard {
+          padding: 40px 24px 36px;
+        }
+        .slogan {
+          font-size: 16px;
+        }
+        .splashHint {
+          font-size: 15px;
+        }
+      }
+      @media (max-width: 520px) {
+        .brandStrip {
+          grid-template-columns: 1fr;
         }
       }
       .deviceMock {
@@ -558,40 +588,28 @@
       <!-- Home -->
       <div id="page-home" class="page">
         <div class="card">
-          <div class="poseLayout">
-            <div class="matPanel">
-              <div class="matGrid">
-                <div class="alignedTag">Aligned</div>
-                <div class="dot one"></div>
-                <div class="dot two"></div>
-                <div class="dot three"></div>
-                <div class="dot four"></div>
-              </div>
-              <div class="matHint">Perfect alignment! Weight evenly distributed.</div>
+          <div class="poseRight">
+            <h2>Your Personal<br />Pilates Studio</h2>
+            <div class="small" style="margin-bottom: 12px;">
+              The Form Align app transforms your mat into an intelligent training partner with live coaching and progress tracking.
             </div>
-            <div class="poseRight">
-              <h2>Your Personal<br />Pilates Studio</h2>
-              <div class="small" style="margin-bottom: 12px;">
-                The Form Align app transforms your mat into an intelligent training partner with live coaching and progress tracking.
-              </div>
-              <div class="homeGrid">
-                <button id="homeGenerate" class="poseCard active" type="button">
-                  <strong>Generate my workout</strong>
-                  <span>500+ expert-led classes from beginner to advanced.</span>
-                </button>
-                <button id="homeUpload" class="poseCard" type="button">
-                  <strong>Start my own workout</strong>
-                  <span>Input your own exercises and monitor your form and progress.</span>
-                </button>
-                <button id="homeProgress" class="poseCard" type="button">
-                  <strong>Analytics</strong>
-                  <span>Monitor trends in form, balance, and improvements.</span>
-                </button>
-                <button id="homeClinical" class="poseCard" type="button">
-                  <strong>Generate clinician report</strong>
-                  <span>Create a professional clinician report from your tracked sessions.</span>
-                </button>
-              </div>
+            <div class="homeGrid">
+              <button id="homeGenerate" class="poseCard active" type="button">
+                <strong>Generate my workout</strong>
+                <span>Add your workout goals or concerns to generate a custom workout.</span>
+              </button>
+              <button id="homeUpload" class="poseCard" type="button">
+                <strong>Start my own workout</strong>
+                <span>Input your own exercises and monitor your form and progress.</span>
+              </button>
+              <button id="homeProgress" class="poseCard" type="button">
+                <strong>Analytics</strong>
+                <span>Monitor trends in form, balance, and improvements.</span>
+              </button>
+              <button id="homeClinical" class="poseCard" type="button">
+                <strong>Generate clinician report</strong>
+                <span>Create a professional clinician report from your tracked sessions.</span>
+              </button>
             </div>
           </div>
 
@@ -605,8 +623,13 @@
               <button id="disconnectMatBtn" type="button" disabled>Disconnect</button>
             </div>
             <div class="small pairingStatus mono" id="pairMatStatus">Not paired.</div>
-            <div class="brandStrip" aria-label="Form Align logo variation">
-              <img src="../assets/logo-variants/4.png" alt="Form Align logo variation one" />
+            <div class="brandStrip" aria-label="Pilates mat pairing images">
+              <figure class="brandStripCell">
+                <img src="../assets/logo-variants/3.png" alt="Pilates mat with sensor module" loading="lazy" decoding="async" />
+              </figure>
+              <figure class="brandStripCell">
+                <img src="../assets/logo-variants/4.png" alt="Pilates mat top view" loading="lazy" decoding="async" />
+              </figure>
             </div>
           </div>
         </div>
@@ -616,6 +639,21 @@
       <div id="page-coach" class="page">
         <div class="card">
           <h2>Real-time coach</h2>
+
+          <div id="matSensorPanel" class="mat-workout-panel" aria-label="Mat pressure (Bluetooth)">
+            <div class="mat-shell">
+              <div class="matGrid" id="matGrid">
+                <div class="alignedTag" id="matAlignedTag">—</div>
+                <div class="dot one" id="matDot1"></div>
+                <div class="dot two" id="matDot2"></div>
+                <div class="dot three" id="matDot3"></div>
+                <div class="dot four" id="matDot4"></div>
+              </div>
+              <div class="matHint" id="matHint">
+                Pair your mat on the home screen, then open this workout. Pressure dots appear when Bluetooth sends sensor data (hidden while the session is running).
+              </div>
+            </div>
+          </div>
 
           <div class="row" style="margin-bottom: 12px;">
             <div style="min-width: 240px; flex: 1;">
