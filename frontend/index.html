@@ -78,13 +78,17 @@
       }
       .splash {
         min-height: 100vh;
-        padding: 20px 24px;
+        padding: 16px 24px 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
       }
       #splashCard {
         width: 100%;
         max-width: 1040px;
         margin: 0 auto;
-        padding: 24px 20px 0;
+        padding: 8px 20px 0;
         text-align: center;
         overflow: visible;
         background: transparent;
@@ -234,12 +238,14 @@
         color: #5d687b;
         font-size: 13px;
       }
-      .poseCard.active {
+      .poseCard.active,
+      .poseCard.ctaSky {
         background: var(--accent-sky);
         border-color: rgba(40, 110, 170, 0.45);
         color: #061018;
       }
-      .poseCard.active span {
+      .poseCard.active span,
+      .poseCard.ctaSky span {
         color: rgba(8, 28, 48, 0.82);
       }
       .homeBtn strong {
@@ -597,7 +603,7 @@
           height: 168px;
         }
         #splashCard {
-          padding: 40px 16px 0;
+          padding: 12px 16px 0;
         }
         .slogan {
           font-size: 16px;
@@ -650,7 +656,7 @@
 
     <!-- Splash / landing (full-width, no content column wrapper) -->
     <div id="page-splash" class="page active">
-      <div class="splash center">
+      <div class="splash">
         <div id="splashCard">
           <img class="logoMark" src="../assets/form-align-logo-v2.png" alt="Form Align logo" />
           <div class="slogan">
@@ -670,11 +676,11 @@
               The Form Align app transforms your mat into an intelligent training partner with live coaching and progress tracking.
             </div>
             <div class="homeGrid">
-              <button id="homeGenerate" class="poseCard active" type="button">
+              <button id="homeGenerate" class="poseCard ctaSky" type="button">
                 <strong>Generate my workout</strong>
                 <span>Add your workout goals or concerns to generate a custom workout.</span>
               </button>
-              <button id="homeUpload" class="poseCard" type="button">
+              <button id="homeUpload" class="poseCard ctaSky" type="button">
                 <strong>Start my own workout</strong>
                 <span>Input your own exercises and monitor your form and progress.</span>
               </button>
