@@ -14,6 +14,7 @@
         --border: rgba(255, 255, 255, 0.12);
         --accent: #4a6cf7;
         --accent-green: #00b56a;
+        --accent-sky: #5eb1f3;
         --danger: #ef4444;
         --ok: #10b981;
         --warn: #f59e0b;
@@ -78,17 +79,17 @@
         min-height: 100vh;
         padding: 20px 24px;
       }
-      .splashCard {
+      #splashCard {
         width: 100%;
         max-width: 1040px;
-        border-radius: 28px;
-        border: 1px solid var(--border);
-        background: radial-gradient(1200px 700px at 10% 10%, rgba(74, 108, 247, 0.22), transparent 50%),
-          radial-gradient(900px 500px at 80% 30%, rgba(16, 185, 129, 0.16), transparent 55%),
-          rgba(255, 255, 255, 0.03);
-        padding: 56px 48px 52px;
+        margin: 0 auto;
+        padding: 24px 20px 0;
         text-align: center;
-        overflow: hidden;
+        overflow: visible;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
       }
       .logoMark {
         width: 240px;
@@ -106,11 +107,6 @@
         max-width: 52em;
         margin-left: auto;
         margin-right: auto;
-      }
-      .splashHint {
-        margin-top: 32px;
-        font-size: 17px;
-        color: var(--muted);
       }
       .swipeUp {
         animation: swipeUp 700ms ease-in forwards;
@@ -216,12 +212,6 @@
         padding: 10px 12px;
         font-size: 13px;
       }
-      .poseRight h2 {
-        color: #f5f8ff;
-        font-size: 44px;
-        margin: 0 0 12px;
-        line-height: 1.04;
-      }
       .poseCard {
         width: 100%;
         border: 1px solid #d6dbe3;
@@ -241,12 +231,12 @@
         font-size: 13px;
       }
       .poseCard.active {
-        background: #07a85f;
-        border-color: rgba(0, 0, 0, 0.05);
-        color: #ecfff5;
+        background: var(--accent-sky);
+        border-color: rgba(40, 110, 170, 0.45);
+        color: #061018;
       }
       .poseCard.active span {
-        color: #d6ffea;
+        color: rgba(8, 28, 48, 0.82);
       }
       .homeBtn strong {
         display: block;
@@ -281,6 +271,21 @@
         font-weight: 700;
         color: var(--muted);
       }
+      .card .poseRight h2 {
+        font-size: clamp(30px, 6vw, 48px);
+        font-weight: 800;
+        color: #f5f8ff;
+        letter-spacing: -0.03em;
+        margin: 0 0 14px;
+        line-height: 1.05;
+      }
+      .homeHeroLead {
+        font-size: clamp(15px, 3.6vw, 18px);
+        line-height: 1.55;
+        color: #dbe4f2;
+        margin: 0 0 18px;
+        max-width: 42em;
+      }
       .row {
         display: flex;
         align-items: center;
@@ -304,6 +309,69 @@
       button.primary {
         background: var(--accent);
         border-color: rgba(74, 108, 247, 0.7);
+      }
+      button.coachingStartBtn {
+        background: var(--accent-sky);
+        border-color: rgba(94, 177, 243, 0.55);
+        color: #061018;
+        font-weight: 700;
+      }
+      button.coachingStartBtn:not(:disabled):hover {
+        filter: brightness(1.05);
+      }
+      button.pairingMatComposite {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0;
+        margin: 0;
+        width: min(100%, 280px);
+        aspect-ratio: 1 / 1;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #0a1018;
+        border: 1px solid rgba(120, 150, 255, 0.28);
+        box-shadow:
+          0 8px 28px rgba(0, 0, 0, 0.45),
+          0 0 0 1px rgba(255, 255, 255, 0.06);
+        cursor: pointer;
+        font-family: inherit;
+        color: #fff;
+      }
+      button.pairingMatComposite:not(:disabled):hover {
+        filter: brightness(1.06);
+        box-shadow:
+          0 10px 32px rgba(74, 108, 247, 0.35),
+          0 0 0 1px rgba(255, 255, 255, 0.1);
+      }
+      button.pairingMatComposite:not(:disabled):active {
+        filter: brightness(0.96);
+      }
+      .pairingMatComposite__media {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: block;
+        position: relative;
+      }
+      .pairingMatComposite__media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+      .pairingMatComposite__label {
+        flex-shrink: 0;
+        padding: 12px 14px;
+        text-align: center;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        background: linear-gradient(180deg, #5b7cff 0%, var(--accent) 100%);
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .pairingPairRow {
+        align-items: flex-start;
       }
       label {
         font-size: 12px;
@@ -468,39 +536,29 @@
         margin: 0 0 12px;
       }
       .pairingCard {
-        background: var(--card-soft);
-        border: 1px solid var(--border);
+        background: linear-gradient(180deg, rgba(26, 38, 64, 0.55), rgba(15, 23, 40, 0.98));
+        border: 1px solid rgba(120, 155, 255, 0.28);
         border-radius: 14px;
-        padding: 14px;
-        margin-top: 14px;
+        padding: 16px 16px 14px;
+        margin-top: 18px;
+        box-shadow: 0 4px 28px rgba(0, 0, 0, 0.38);
+      }
+      .card .pairingCard h2 {
+        font-size: clamp(20px, 4.2vw, 28px);
+        font-weight: 800;
+        color: #f5f8ff;
+        letter-spacing: -0.02em;
+        margin: 0 0 10px;
+        line-height: 1.15;
+      }
+      .pairingLead {
+        font-size: clamp(14px, 3.5vw, 16px);
+        line-height: 1.5;
+        color: #d8e2f5;
+        margin: 0;
       }
       .pairingStatus {
         margin-top: 8px;
-      }
-      .brandStrip {
-        margin-top: 12px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        align-items: stretch;
-      }
-      .brandStripCell {
-        margin: 0;
-        border-radius: 10px;
-        border: 1px solid var(--border);
-        background: rgba(10, 16, 30, 0.75);
-        overflow: hidden;
-        aspect-ratio: 4 / 3;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .brandStrip img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        object-position: center;
-        display: block;
       }
       @media (max-width: 720px) {
         .brandLogo {
@@ -511,19 +569,11 @@
           width: 168px;
           height: 168px;
         }
-        .splashCard {
-          padding: 40px 24px 36px;
+        #splashCard {
+          padding: 40px 16px 0;
         }
         .slogan {
           font-size: 16px;
-        }
-        .splashHint {
-          font-size: 15px;
-        }
-      }
-      @media (max-width: 520px) {
-        .brandStrip {
-          grid-template-columns: 1fr;
         }
       }
       .deviceMock {
@@ -569,28 +619,27 @@
   <body>
     <header>
       <img class="brandLogo" src="../assets/form-align-logo-circle.png" alt="Form Align logo" />
-      <div class="small mono" id="statusPill">Idle</div>
     </header>
-    <div class="wrap">
-      <!-- Splash / landing -->
-      <div id="page-splash" class="page active">
-        <div class="splash center">
-          <div class="splashCard" id="splashCard">
-            <img class="logoMark" src="../assets/form-align-logo-circle.png" alt="Form Align logo" />
-            <div class="slogan">
-              Real-time exercise form & posture coach. Interpretable feedback to bridge at-home rehab and clinical physiotherapy.
-            </div>
-            <div class="splashHint">Loading…</div>
+
+    <!-- Splash / landing (full-width, no content column wrapper) -->
+    <div id="page-splash" class="page active">
+      <div class="splash center">
+        <div id="splashCard">
+          <img class="logoMark" src="../assets/form-align-logo-circle.png" alt="Form Align logo" />
+          <div class="slogan">
+            Real-time exercise form & posture coach. Interpretable feedback to bridge at-home rehab and clinical physiotherapy.
           </div>
         </div>
       </div>
+    </div>
 
+    <div class="wrap">
       <!-- Home -->
       <div id="page-home" class="page">
         <div class="card">
           <div class="poseRight">
             <h2>Your Personal<br />Pilates Studio</h2>
-            <div class="small" style="margin-bottom: 12px;">
+            <div class="homeHeroLead">
               The Form Align app transforms your mat into an intelligent training partner with live coaching and progress tracking.
             </div>
             <div class="homeGrid">
@@ -614,23 +663,30 @@
           </div>
 
           <div class="pairingCard">
-            <h2 style="margin-bottom: 8px;">Pair Pilates Mat (Bluetooth)</h2>
-            <div class="small">
+            <h2>Pair Pilates Mat (Bluetooth)</h2>
+            <div class="pairingLead">
               Connect your smart mat for richer posture context and session insights.
             </div>
-            <div class="row" style="margin-top: 10px;">
-              <button id="pairMatBtn" class="primary" type="button">Pair via Bluetooth</button>
-              <button id="disconnectMatBtn" type="button" disabled>Disconnect</button>
+            <div class="row pairingPairRow" style="margin-top: 10px;">
+              <button
+                id="pairMatBtn"
+                type="button"
+                class="pairingMatComposite pairMatPairBtn"
+                aria-label="Pair via Bluetooth"
+              >
+                <span class="pairingMatComposite__media">
+                  <img
+                    src="../assets/logo-variants/mat-pair-cta.png"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+                <span class="pairingMatComposite__label">Pair via Bluetooth</span>
+              </button>
+              <button id="disconnectMatBtn" type="button" class="pairMatDisconnectBtn" disabled>Disconnect</button>
             </div>
-            <div class="small pairingStatus mono" id="pairMatStatus">Not paired.</div>
-            <div class="brandStrip" aria-label="Pilates mat pairing images">
-              <figure class="brandStripCell">
-                <img src="../assets/logo-variants/3.png" alt="Pilates mat with sensor module" loading="lazy" decoding="async" />
-              </figure>
-              <figure class="brandStripCell">
-                <img src="../assets/logo-variants/4.png" alt="Pilates mat top view" loading="lazy" decoding="async" />
-              </figure>
-            </div>
+            <div class="small pairingStatus mono pairMatStatus" id="pairMatStatus">Not paired.</div>
           </div>
         </div>
       </div>
@@ -639,6 +695,17 @@
       <div id="page-coach" class="page">
         <div class="card">
           <h2>Real-time coach</h2>
+
+          <div class="row" style="margin-bottom: 10px;">
+            <div style="flex: 1;">
+              <label for="manualWorkoutText">Your workout / PT instructions (paste)</label>
+              <textarea id="manualWorkoutText" placeholder="Example: PT gave me knee-friendly squats; go slow; stop if pain; focus on keeping torso upright..."></textarea>
+              <div class="row" style="margin-top: 10px;">
+                <button id="addWorkoutBtn" class="primary" style="flex: 1;">Add my workout</button>
+              </div>
+              <div class="small" id="manualWorkoutStatus" style="margin-top: 10px;">-</div>
+            </div>
+          </div>
 
           <div id="matSensorPanel" class="mat-workout-panel" aria-label="Mat pressure (Bluetooth)">
             <div class="mat-shell">
@@ -650,7 +717,7 @@
                 <div class="dot four" id="matDot4"></div>
               </div>
               <div class="matHint" id="matHint">
-                Pair your mat on the home screen, then open this workout. Pressure dots appear when Bluetooth sends sensor data (hidden while the session is running).
+                Pair your mat on the home screen, then open this workout. Pressure dots appear when Bluetooth sends sensor data.
               </div>
             </div>
           </div>
@@ -672,17 +739,6 @@
                 <option value="true">If I feel pain/discomfort, I want the coach to stop</option>
                 <option value="false">No safety gating (not recommended)</option>
               </select>
-            </div>
-          </div>
-
-          <div class="row" style="margin-bottom: 10px;">
-            <div style="flex: 1;">
-              <label for="manualWorkoutText">Your workout / PT instructions (paste)</label>
-              <textarea id="manualWorkoutText" placeholder="Example: PT gave me knee-friendly squats; go slow; stop if pain; focus on keeping torso upright..."></textarea>
-              <div class="row" style="margin-top: 10px;">
-                <button id="addWorkoutBtn" class="primary" style="flex: 1;">Add my workout</button>
-              </div>
-              <div class="small" id="manualWorkoutStatus" style="margin-top: 10px;">-</div>
             </div>
           </div>
 
@@ -741,16 +797,34 @@
 
               <div class="divider"></div>
 
-              <div class="small" style="margin-bottom: 8px;">Detected first exercise</div>
-              <div class="small mono" id="detectedExerciseFromPlan">-</div>
-
               <div class="row" style="margin-top: 12px;">
-                <button id="startCoachingFromPlanBtn" class="primary" disabled style="flex: 1;">Start coaching</button>
-              </div>
-              <div class="small" style="margin-top: 10px;">
-                Tip: once generated, navigate to the coach page to start real-time feedback.
+                <button id="startCoachingFromPlanBtn" class="primary coachingStartBtn" disabled style="flex: 1;">
+                  Start Coaching
+                </button>
               </div>
             </div>
+          </div>
+
+          <div class="pairingCard">
+            <h2>Pair Pilates Mat (Bluetooth)</h2>
+            <div class="pairingLead">
+              Connect your smart mat for richer posture context and session insights.
+            </div>
+            <div class="row pairingPairRow" style="margin-top: 10px;">
+              <button type="button" class="pairingMatComposite pairMatPairBtn" aria-label="Pair via Bluetooth">
+                <span class="pairingMatComposite__media">
+                  <img
+                    src="../assets/logo-variants/mat-pair-cta.png"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+                <span class="pairingMatComposite__label">Pair via Bluetooth</span>
+              </button>
+              <button type="button" class="pairMatDisconnectBtn" disabled>Disconnect</button>
+            </div>
+            <div class="small pairingStatus mono pairMatStatus">Not paired.</div>
           </div>
         </div>
       </div>

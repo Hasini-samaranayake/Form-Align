@@ -17,6 +17,7 @@
     --border: rgba(255, 255, 255, 0.14);
     --accent-text: #4a6cf7;
     --accent-green: #00b56a;
+    --accent-sky: #5eb1f3;
     --accent-image: #e85d75;
     --accent-audio: #f59e0b;
     --accent-video: #10b981;
@@ -483,6 +484,18 @@
     color: var(--text-secondary);
   }
 
+  .home-btn.home-btn-cta {
+    background: var(--accent-sky);
+    border-color: rgba(40, 110, 170, 0.45);
+    box-shadow: 0 6px 22px rgba(94, 177, 243, 0.28);
+  }
+  .home-btn.home-btn-cta .title {
+    color: #061018;
+  }
+  .home-btn.home-btn-cta .desc {
+    color: rgba(8, 28, 48, 0.82);
+  }
+
   .panel {
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -504,17 +517,45 @@
   }
 
   .hero-title {
-    font-size: 2rem;
+    font-size: clamp(1.75rem, 5vw, 2.35rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #f5f8ff;
     line-height: 1.05;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+  }
+
+  .home-hero-lead {
+    font-size: clamp(0.95rem, 3.2vw, 1.1rem);
+    line-height: 1.55;
+    color: #dbe4f2;
+    margin: 0 0 16px;
+    max-width: 42em;
   }
 
   .pair-card {
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(26, 38, 64, 0.55), rgba(15, 23, 40, 0.98));
+    border: 1px solid rgba(120, 155, 255, 0.28);
     border-radius: 14px;
-    padding: 14px;
-    margin-top: 14px;
+    padding: 16px 16px 14px;
+    margin-top: 18px;
+    box-shadow: 0 4px 28px rgba(0, 0, 0, 0.38);
+  }
+
+  .pair-card h2 {
+    font-size: clamp(1.15rem, 3.8vw, 1.65rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #f5f8ff;
+    margin: 0 0 10px;
+    line-height: 1.15;
+  }
+
+  .pair-card .pairing-lead {
+    font-size: clamp(0.88rem, 3vw, 1rem);
+    line-height: 1.5;
+    color: #d8e2f5;
+    margin: 0 0 0;
   }
 
   .pair-status {
@@ -522,40 +563,10 @@
     font-size: 0.86rem;
     color: var(--text-secondary);
   }
-  .brand-strip {
-    margin-top: 10px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    align-items: stretch;
-  }
-  .brand-strip-cell {
-    margin: 0;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: rgba(10, 16, 30, 0.75);
-    overflow: hidden;
-    aspect-ratio: 4 / 3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .brand-strip img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
-    display: block;
-  }
   @media (max-width: 720px) {
     .brand-logo {
       width: 42px;
       height: 42px;
-    }
-  }
-  @media (max-width: 520px) {
-    .brand-strip {
-      grid-template-columns: 1fr;
     }
   }
 
@@ -589,6 +600,62 @@
     gap: 8px;
     flex-wrap: wrap;
     margin-top: 8px;
+  }
+
+  .row-actions.pairingPairRow {
+    align-items: flex-start;
+  }
+
+  button.pairingMatComposite {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    margin: 0;
+    width: min(100%, 280px);
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #0a1018;
+    border: 1px solid rgba(120, 150, 255, 0.28);
+    box-shadow:
+      0 8px 28px rgba(0, 0, 0, 0.45),
+      0 0 0 1px rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    font-family: inherit;
+    color: #fff;
+  }
+  button.pairingMatComposite:not(:disabled):hover {
+    filter: brightness(1.06);
+    box-shadow:
+      0 10px 32px rgba(74, 108, 247, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+  button.pairingMatComposite:not(:disabled):active {
+    filter: brightness(0.96);
+  }
+  .pairingMatComposite__media {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: block;
+    position: relative;
+  }
+  .pairingMatComposite__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .pairingMatComposite__label {
+    flex-shrink: 0;
+    padding: 12px 14px;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: linear-gradient(180deg, #5b7cff 0%, var(--accent-text) 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
 
   .btn {
@@ -719,9 +786,9 @@
       <div class="hero-split">
         <div>
           <h2 class="hero-title">Your Personal<br>Pilates Studio</h2>
-          <p class="hint" style="margin-bottom:12px">The Form Align app transforms your mat into an intelligent training partner with live coaching and progress tracking.</p>
+          <p class="home-hero-lead">The Form Align app transforms your mat into an intelligent training partner with live coaching and progress tracking.</p>
           <div class="home-grid">
-            <button class="home-btn" data-go-tab="generate">
+            <button class="home-btn home-btn-cta" data-go-tab="generate">
               <div class="title">Generate my workout</div>
               <div class="desc">Add your workout goals or concerns to generate a custom workout.</div>
             </button>
@@ -753,21 +820,18 @@
       </div>
 
       <div class="pair-card">
-        <h2 style="margin-bottom:8px">Pair Pilates Mat (Bluetooth)</h2>
-        <p class="hint">Connect your smart mat to sync pressure and session context.</p>
-        <div class="row-actions">
-          <button class="btn success" id="pairMatBtn" type="button">Pair via Bluetooth</button>
+        <h2>Pair Pilates Mat (Bluetooth)</h2>
+        <p class="pairing-lead">Connect your smart mat to sync pressure and session context.</p>
+        <div class="row-actions pairingPairRow">
+          <button id="pairMatBtn" type="button" class="pairingMatComposite" aria-label="Pair via Bluetooth">
+            <span class="pairingMatComposite__media">
+              <img src="assets/logo-variants/mat-pair-cta.png" alt="" loading="lazy" decoding="async">
+            </span>
+            <span class="pairingMatComposite__label">Pair via Bluetooth</span>
+          </button>
           <button class="btn secondary" id="disconnectMatBtn" type="button" disabled>Disconnect</button>
         </div>
         <div id="pairMatStatus" class="pair-status">Not paired.</div>
-        <div class="brand-strip" aria-label="Pilates mat pairing images">
-          <figure class="brand-strip-cell">
-            <img src="assets/logo-variants/3.png" alt="Pilates mat with sensor module" loading="lazy" decoding="async">
-          </figure>
-          <figure class="brand-strip-cell">
-            <img src="assets/logo-variants/4.png" alt="Pilates mat top view" loading="lazy" decoding="async">
-          </figure>
-        </div>
       </div>
     </div>
   </section>

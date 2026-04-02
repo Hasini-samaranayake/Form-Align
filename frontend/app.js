@@ -348,9 +348,6 @@ async function main() {
   const tabDashboard = $("tab-dashboard");
   const tabProfile = $("tab-profile");
   const profileUserId = $("profileUserId");
-  const pairMatBtn = $("pairMatBtn");
-  const disconnectMatBtn = $("disconnectMatBtn");
-  const pairMatStatus = $("pairMatStatus");
   const matSensorPanel = $("matSensorPanel");
   const matDot1 = $("matDot1");
   const matDot2 = $("matDot2");
@@ -358,13 +355,14 @@ async function main() {
   const matDot4 = $("matDot4");
   const matHint = $("matHint");
   const matAlignedTag = $("matAlignedTag");
+  const MAT_HINT_PAIR =
+    "Pair your mat on the home screen, then open this workout. Pressure dots appear when Bluetooth sends sensor data.";
 
   const reportsSessionId = $("reportsSessionId");
   const generateReportBtn = $("generateReportBtn");
   const refreshBtn = $("refreshBtn");
   const generateWorkoutPlanBtn = $("generateWorkoutPlanBtn");
   const workoutPlanOutput = $("workoutPlanOutput");
-  const detectedExerciseFromPlan = $("detectedExerciseFromPlan");
   const startCoachingFromPlanBtn = $("startCoachingFromPlanBtn");
 
   const metricsExercise = $("metricsExercise");
@@ -433,7 +431,7 @@ async function main() {
   }
 
   function setStatus(text) {
-    statusPill.textContent = text;
+    if (statusPill) statusPill.textContent = text;
   }
 
   function matStopBluetoothNotifications() {
@@ -542,77 +540,94 @@ async function main() {
   }
 
   function setupBluetoothPairing() {
-    if (!pairMatBtn || !disconnectMatBtn || !pairMatStatus) return;
+    const pairMatBtns = document.querySelectorAll(".pairMatPairBtn");
+    const disconnectMatBtns = document.querySelectorAll(".pairMatDisconnectBtn");
+    const pairMatStatuses = document.querySelectorAll(".pairMatStatus");
+    if (!pairMatBtns.length || !disconnectMatBtns.length || !pairMatStatuses.length) return;
 
     const supported = typeof navigator !== "undefined" && !!navigator.bluetooth && window.isSecureContext;
 
     const render = (text) => {
-      pairMatStatus.textContent = text;
+      pairMatStatuses.forEach((el) => {
+        el.textContent = text;
+      });
     };
 
     if (!supported) {
-      pairMatBtn.disabled = true;
-      disconnectMatBtn.disabled = true;
+      pairMatBtns.forEach((b) => {
+        b.disabled = true;
+      });
+      disconnectMatBtns.forEach((b) => {
+        b.disabled = true;
+      });
       render("Bluetooth unavailable in this browser/context. Use HTTPS Chromium.");
       return;
     }
 
-    pairMatBtn.addEventListener("click", async () => {
-      try {
-        pairMatBtn.disabled = true;
-        render("Searching for Pilates mat...");
-        matBtDevice = await navigator.bluetooth.requestDevice({
-          acceptAllDevices: true,
-          optionalServices: [
-            "battery_service",
-            "device_information",
-            "6e400001-b5a3-f393-e0a9-e50e24dcca9e",
-          ],
-        });
-        matBtDevice.addEventListener("gattserverdisconnected", () => {
-          matStopBluetoothNotifications();
-          setMatBluetoothLive(false);
-          disconnectMatBtn.disabled = true;
-          render(`Disconnected: ${matBtDevice?.name || "Unknown device"}`);
-          if (matHint) {
-            matHint.textContent =
-              "Pair your mat on the home screen, then open this workout. Pressure dots appear when Bluetooth sends sensor data (hidden while the session is running).";
+    pairMatBtns.forEach((pairMatBtn) => {
+      pairMatBtn.addEventListener("click", async () => {
+        try {
+          pairMatBtns.forEach((b) => {
+            b.disabled = true;
+          });
+          render("Searching for Pilates mat...");
+          matBtDevice = await navigator.bluetooth.requestDevice({
+            acceptAllDevices: true,
+            optionalServices: [
+              "battery_service",
+              "device_information",
+              "6e400001-b5a3-f393-e0a9-e50e24dcca9e",
+            ],
+          });
+          matBtDevice.addEventListener("gattserverdisconnected", () => {
+            matStopBluetoothNotifications();
+            setMatBluetoothLive(false);
+            disconnectMatBtns.forEach((b) => {
+              b.disabled = true;
+            });
+            render(`Disconnected: ${matBtDevice?.name || "Unknown device"}`);
+            if (matHint) matHint.textContent = MAT_HINT_PAIR;
+          });
+          const server = await matBtDevice.gatt?.connect();
+          if (server) {
+            disconnectMatBtns.forEach((b) => {
+              b.disabled = false;
+            });
+            render(`Paired: ${matBtDevice?.name || "Unknown device"}`);
+            const ok = await tryAttachMatNotifications(server);
+            if (!ok && matHint) {
+              matHint.textContent =
+                "Mat connected. No notify/indicate characteristics found — your mat may use a custom service; pressure dots will appear when data arrives.";
+            }
+          } else {
+            render("Device selected, but GATT connection unavailable.");
           }
-        });
-        const server = await matBtDevice.gatt?.connect();
-        if (server) {
-          disconnectMatBtn.disabled = false;
-          render(`Paired: ${matBtDevice?.name || "Unknown device"}`);
-          const ok = await tryAttachMatNotifications(server);
-          if (!ok && matHint) {
-            matHint.textContent =
-              "Mat connected. No notify/indicate characteristics found — your mat may use a custom service; pressure dots will appear when data arrives.";
-          }
-        } else {
-          render("Device selected, but GATT connection unavailable.");
+        } catch (e) {
+          render(`Pairing canceled or failed: ${e?.message || String(e)}`);
+        } finally {
+          pairMatBtns.forEach((b) => {
+            b.disabled = false;
+          });
         }
-      } catch (e) {
-        render(`Pairing canceled or failed: ${e?.message || String(e)}`);
-      } finally {
-        pairMatBtn.disabled = false;
-      }
+      });
     });
 
-    disconnectMatBtn.addEventListener("click", () => {
-      try {
-        matStopBluetoothNotifications();
-        setMatBluetoothLive(false);
-        if (matBtDevice?.gatt?.connected) matBtDevice.gatt.disconnect();
-        matBtDevice = null;
-        disconnectMatBtn.disabled = true;
-        render("Disconnected from Pilates mat.");
-        if (matHint) {
-          matHint.textContent =
-            "Pair your mat on the home screen, then open this workout. Pressure dots appear when Bluetooth sends sensor data (hidden while the session is running).";
+    disconnectMatBtns.forEach((disconnectMatBtn) => {
+      disconnectMatBtn.addEventListener("click", () => {
+        try {
+          matStopBluetoothNotifications();
+          setMatBluetoothLive(false);
+          if (matBtDevice?.gatt?.connected) matBtDevice.gatt.disconnect();
+          matBtDevice = null;
+          disconnectMatBtns.forEach((b) => {
+            b.disabled = true;
+          });
+          render("Disconnected from Pilates mat.");
+          if (matHint) matHint.textContent = MAT_HINT_PAIR;
+        } catch (e) {
+          render(`Disconnect error: ${e?.message || String(e)}`);
         }
-      } catch (e) {
-        render(`Disconnect error: ${e?.message || String(e)}`);
-      }
+      });
     });
   }
 
@@ -1263,8 +1278,6 @@ async function main() {
       const data = await res.json();
       workoutPlanOutput.textContent = data.plan_text || "No plan returned.";
 
-      const inferred = inferExerciseTypeFromText(data.plan_text || "");
-      if (detectedExerciseFromPlan) detectedExerciseFromPlan.textContent = formatExerciseName(inferred);
       if (startCoachingFromPlanBtn) startCoachingFromPlanBtn.disabled = false;
 
       // Pre-fill the coach with the generated plan text so it can be used as context/goals.
