@@ -343,6 +343,8 @@ async function main() {
   const pageClinical = $("page-clinical-report");
   const pageProfile = $("page-profile");
 
+  const appHeader = $("appHeader");
+
   // Bottom tabs
   const bottomTabs = $("bottomTabs");
   const tabDashboard = $("tab-dashboard");
@@ -444,6 +446,7 @@ async function main() {
 
     // Bottom tab bar: hide on splash, show everywhere else.
     if (bottomTabs) bottomTabs.classList.toggle("hidden", normalized === "/splash");
+    if (appHeader) appHeader.classList.toggle("hidden", normalized === "/splash");
 
     // Active tab highlighting based on normalized route.
     if (tabDashboard) tabDashboard.classList.toggle("active", normalized !== "/profile" && normalized !== "/splash");
