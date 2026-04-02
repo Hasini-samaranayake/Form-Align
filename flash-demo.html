@@ -603,7 +603,30 @@
   }
 
   .row-actions.pairingPairRow {
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    gap: 12px;
+    width: 100%;
+  }
+  .row-actions.pairingPairRow > .pairingMatComposite {
+    grid-column: 2;
+    justify-self: center;
+  }
+  .row-actions.pairingPairRow > .btn.secondary {
+    grid-column: 3;
+    justify-self: end;
+  }
+  @media (max-width: 520px) {
+    .row-actions.pairingPairRow {
+      grid-template-columns: 1fr;
+      justify-items: center;
+    }
+    .row-actions.pairingPairRow > .pairingMatComposite,
+    .row-actions.pairingPairRow > .btn.secondary {
+      grid-column: 1;
+      justify-self: center;
+    }
   }
 
   button.pairingMatComposite {

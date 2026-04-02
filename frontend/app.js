@@ -349,14 +349,46 @@ async function main() {
   const tabProfile = $("tab-profile");
   const profileUserId = $("profileUserId");
   const matSensorPanel = $("matSensorPanel");
+  const matSensorPanelGenerate = $("matSensorPanelGenerate");
   const matDot1 = $("matDot1");
   const matDot2 = $("matDot2");
   const matDot3 = $("matDot3");
   const matDot4 = $("matDot4");
+  const matDot1Generate = $("matDot1Generate");
+  const matDot2Generate = $("matDot2Generate");
+  const matDot3Generate = $("matDot3Generate");
+  const matDot4Generate = $("matDot4Generate");
   const matHint = $("matHint");
+  const matHintGenerate = $("matHintGenerate");
   const matAlignedTag = $("matAlignedTag");
+  const matAlignedTagGenerate = $("matAlignedTagGenerate");
   const MAT_HINT_PAIR =
     "Pair your mat on the home screen, then open this workout. Pressure dots appear when Bluetooth sends sensor data.";
+
+  function matSensorPanelsEl() {
+    return [matSensorPanel, matSensorPanelGenerate].filter(Boolean);
+  }
+
+  function matAlignedTagsEl() {
+    return [matAlignedTag, matAlignedTagGenerate].filter(Boolean);
+  }
+
+  function coachMatDots() {
+    return [matDot1, matDot2, matDot3, matDot4];
+  }
+
+  function generateMatDots() {
+    return [matDot1Generate, matDot2Generate, matDot3Generate, matDot4Generate];
+  }
+
+  function allMatDots() {
+    return [...coachMatDots(), ...generateMatDots()].filter(Boolean);
+  }
+
+  function setMatHint(text) {
+    if (matHint) matHint.textContent = text;
+    if (matHintGenerate) matHintGenerate.textContent = text;
+  }
 
   const reportsSessionId = $("reportsSessionId");
   const generateReportBtn = $("generateReportBtn");
@@ -447,8 +479,7 @@ async function main() {
   }
 
   function matResetDotsVisual() {
-    [matDot1, matDot2, matDot3, matDot4].forEach((el) => {
-      if (!el) return;
+    allMatDots().forEach((el) => {
       el.style.opacity = "";
       el.style.transform = "";
     });
@@ -475,30 +506,36 @@ async function main() {
   }
 
   function updateMatDotsFromReadings(arr) {
-    const dots = [matDot1, matDot2, matDot3, matDot4];
-    arr.forEach((v, i) => {
-      const t = Math.max(0, Math.min(1, v));
-      const el = dots[i];
-      if (!el) return;
-      el.style.opacity = String(0.25 + 0.75 * t);
-      el.style.transform = `scale(${0.65 + 0.4 * t})`;
+    const applyToRow = (dots) => {
+      arr.forEach((v, i) => {
+        const t = Math.max(0, Math.min(1, v));
+        const el = dots[i];
+        if (!el) return;
+        el.style.opacity = String(0.25 + 0.75 * t);
+        el.style.transform = `scale(${0.65 + 0.4 * t})`;
+      });
+    };
+    applyToRow(coachMatDots());
+    applyToRow(generateMatDots());
+    const spread = Math.max(...arr) - Math.min(...arr);
+    const label = spread < 0.25 ? "Aligned" : "Adjust";
+    matAlignedTagsEl().forEach((tag) => {
+      tag.textContent = label;
     });
-    if (matAlignedTag) {
-      const spread = Math.max(...arr) - Math.min(...arr);
-      matAlignedTag.textContent = spread < 0.25 ? "Aligned" : "Adjust";
-    }
   }
 
   function setMatSessionRunning(on) {
-    matSensorPanel?.classList.toggle("session-running", !!on);
+    matSensorPanelsEl().forEach((p) => p.classList.toggle("session-running", !!on));
   }
 
   function setMatBluetoothLive(on) {
     matHasLiveReadings = !!on;
-    matSensorPanel?.classList.toggle("mat-live", !!on);
+    matSensorPanelsEl().forEach((p) => p.classList.toggle("mat-live", !!on));
     if (!on) {
       matResetDotsVisual();
-      if (matAlignedTag) matAlignedTag.textContent = "—";
+      matAlignedTagsEl().forEach((tag) => {
+        tag.textContent = "—";
+      });
     }
   }
 
@@ -527,7 +564,7 @@ async function main() {
               if (!parsed) return;
               setMatBluetoothLive(true);
               updateMatDotsFromReadings(parsed);
-              if (matHint) matHint.textContent = "Live pressure from mat (Bluetooth).";
+              setMatHint("Live pressure from mat (Bluetooth).");
             };
             ch.addEventListener("characteristicvaluechanged", handler);
             matNotifyHandlers.push({ ch, handler });
@@ -586,7 +623,7 @@ async function main() {
               b.disabled = true;
             });
             render(`Disconnected: ${matBtDevice?.name || "Unknown device"}`);
-            if (matHint) matHint.textContent = MAT_HINT_PAIR;
+            setMatHint(MAT_HINT_PAIR);
           });
           const server = await matBtDevice.gatt?.connect();
           if (server) {
@@ -595,9 +632,10 @@ async function main() {
             });
             render(`Paired: ${matBtDevice?.name || "Unknown device"}`);
             const ok = await tryAttachMatNotifications(server);
-            if (!ok && matHint) {
-              matHint.textContent =
-                "Mat connected. No notify/indicate characteristics found — your mat may use a custom service; pressure dots will appear when data arrives.";
+            if (!ok) {
+              setMatHint(
+                "Mat connected. No notify/indicate characteristics found — your mat may use a custom service; pressure dots will appear when data arrives.",
+              );
             }
           } else {
             render("Device selected, but GATT connection unavailable.");
@@ -623,7 +661,7 @@ async function main() {
             b.disabled = true;
           });
           render("Disconnected from Pilates mat.");
-          if (matHint) matHint.textContent = MAT_HINT_PAIR;
+          setMatHint(MAT_HINT_PAIR);
         } catch (e) {
           render(`Disconnect error: ${e?.message || String(e)}`);
         }
